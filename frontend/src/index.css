@@ -1,0 +1,76 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-background text-gray-800 antialiased;
+    perspective: 1000px;
+    /* Enable global 3D perspective */
+  }
+}
+
+/* Glassmorphism Utilities */
+.glass-panel {
+  @apply bg-white/70 backdrop-blur-md border border-white/40 shadow-xl rounded-2xl;
+  box-shadow:
+    0 10px 30px -5px rgba(0, 0, 0, 0.1),
+    0 5px 15px -3px rgba(0, 0, 0, 0.05),
+    inset 0 0 20px rgba(255, 255, 255, 0.5);
+  /* Inner glow for glass effect */
+  transform-style: preserve-3d;
+}
+
+/* Enhanced Gradient Background */
+.auth-gradient {
+  background: radial-gradient(circle at top left, #dcfce7 0%, transparent 40%),
+    radial-gradient(circle at bottom right, #dbeafe 0%, transparent 40%),
+    #f8fafc;
+  /* Fallback/Base */
+}
+
+.btn-primary {
+  @apply bg-gradient-to-br from-primary to-primary-dark text-white px-6 py-3 rounded-xl font-medium shadow-lg shadow-primary/30 flex items-center justify-center gap-2 transform transition-all duration-300;
+}
+
+.btn-primary:hover {
+  @apply shadow-primary/50 -translate-y-1 scale-105;
+}
+
+.input-field {
+  @apply w-full px-5 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-4 focus:ring-primary/20 focus:border-primary transition-all duration-300 bg-white/60 backdrop-blur-sm shadow-inner;
+}
+
+/* 3D Animations */
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-15px);
+  }
+
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+.floating {
+  animation: float 6s ease-in-out infinite;
+}
+
+.floating-delayed {
+  animation: float 7s ease-in-out infinite 1s;
+  /* Delayed start */
+}
+
+/* 3D Card Hover Effect (Pure CSS fallback) */
+.hover-3d {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hover-3d:hover {
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: 0 20px 40px -5px rgba(0, 0, 0, 0.15);
+}
