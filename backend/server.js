@@ -9,6 +9,8 @@ dotenv.config();
 const authRoutes = require('./routes/authRoutes');
 const activityRoutes = require('./routes/activityRoutes');
 const adminRoutes = require('./routes/adminRoutes');
+const streakRoutes = require('./routes/streakRoutes');
+const journalRoutes = require('./routes/journalRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -21,6 +23,8 @@ app.use(express.json());
 app.use('/api/auth', authRoutes);
 app.use('/api/activities', activityRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/api/streaks', streakRoutes);
+app.use('/api/journals', journalRoutes);
 
 // Database Connection
 mongoose.connect(process.env.MONGODB_URI, {

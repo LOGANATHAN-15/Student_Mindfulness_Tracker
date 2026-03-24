@@ -15,16 +15,22 @@ import {
     LogOut,
     UserCheck,
     Calendar,
-    Award
+    Award,
+    BookOpen,
+    Timer
 } from 'lucide-react';
 import useAutoLogout from '../hooks/useAutoLogout';
 import axios from 'axios';
+import ThemeToggle from '../components/ThemeToggle';
+import StreakCard from '../components/StreakCard';
+import MoodChart from '../components/MoodChart';
 
 const Dashboard = () => {
     const { user, logout } = useContext(AuthContext);
     useAutoLogout(logout);
 
     const [stats, setStats] = useState({ totalDuration: 0, sessionCount: 0 });
+    const [activities, setActivities] = useState([]);
 
     useEffect(() => {
         const fetchStats = async () => {
@@ -34,6 +40,7 @@ const Dashboard = () => {
 
                 const totalDuration = data.reduce((acc, curr) => acc + curr.duration, 0);
                 setStats({ totalDuration, sessionCount: data.length });
+                setActivities(data);
             } catch (error) {
                 console.error("Error fetching stats", error);
             }
@@ -51,43 +58,45 @@ const Dashboard = () => {
     };
 
     const itemVariants = {
-        hidden: { y: 20, opacity: 0, rotateX: -10 },
-        visible: { y: 0, opacity: 1, rotateX: 0 }
+        hidden: { opacity: 0 },
+        visible: { opacity: 1 }
     };
 
+
     const StatCard = ({ icon: Icon, label, value, color, delay }) => (
-        <Tilt
-            tiltMaxAngleX={10}
-            tiltMaxAngleY={10}
-            scale={1.05}
-            transitionSpeed={400}
-            className="h-full"
+        // <Tilt
+        //     tiltMaxAngleX={10}
+        //     tiltMaxAngleY={10}
+        //     scale={1.05}
+        //     transitionSpeed={400}
+        //     className="h-full"
+        // >
+        <motion.div
+            variants={itemVariants}
+            //   whileHover={{ y: -5 }}
+            className={`glass-panel p-6 h-full flex flex-col justify-between relative overflow-hidden group border-t-4 ${color.border}`}
         >
-            <motion.div
-                variants={itemVariants}
-                whileHover={{ y: -5 }}
-                className={`glass-panel p-6 h-full flex flex-col justify-between relative overflow-hidden group border-t-4 ${color.border}`}
-            >
-                <div className={`absolute top-0 right-0 p-10 opacity-10 transform translate-x-4 -translate-y-4 group-hover:scale-110 transition-transform duration-500`}>
-                    <Icon size={120} className={color.text} />
-                </div>
+            <div className={`absolute top-0 right-0 p-10 opacity-10 transform translate-x-4 -translate-y-4 group-hover:scale-110 transition-transform duration-500`}>
+                <Icon size={120} className={color.text} />
+            </div>
 
-                <div className="flex items-center space-x-4 z-10">
-                    <div className={`p-4 rounded-2xl ${color.bg} ${color.text} shadow-lg shadow-${color.shadow}/30`}>
-                        <Icon size={28} />
-                    </div>
-                    <div>
-                        <p className="text-gray-500 text-sm font-semibold uppercase tracking-wider">{label}</p>
-                        <h3 className="text-3xl font-bold text-gray-800 mt-1">{value}</h3>
-                    </div>
+            <div className="flex items-center space-x-4 z-10">
+                <div className={`p-4 rounded-2xl ${color.bg} ${color.text} shadow-lg shadow-${color.shadow}/30`}>
+                    <Icon size={28} />
                 </div>
+                <div>
+                    <p className="text-gray-500 text-sm font-semibold uppercase tracking-wider">{label}</p>
+                    <h3 className="text-3xl font-bold text-gray-800 mt-1">{value}</h3>
+                </div>
+            </div>
 
-                <div className="mt-6 flex items-center text-sm text-gray-400 group-hover:text-primary transition-colors">
-                    <span>View Details</span>
-                    <span className="ml-2 group-hover:translate-x-1 transition-transform">→</span>
-                </div>
-            </motion.div>
-        </Tilt>
+            <div className="mt-6 flex items-center text-sm text-primary">
+
+                <span>View Details</span>
+                <span className="ml-2 group-hover:translate-x-1 transition-transform">→</span>
+            </div>
+        </motion.div>
+        // </Tilt>
     );
 
     return (
@@ -99,11 +108,13 @@ const Dashboard = () => {
             </div>
 
             <div className="container mx-auto px-4 py-12 max-w-7xl relative z-10">
-                <motion.div
+                {/* <motion.div
                     initial="hidden"
                     animate="visible"
                     variants={containerVariants}
-                >
+                > */}
+                <div>
+
                     {/* Header Section */}
                     <div className="flex flex-col md:flex-row justify-between items-end mb-12">
                         <div>
@@ -121,7 +132,8 @@ const Dashboard = () => {
                             </motion.div>
                         </div>
 
-                        <div className="mt-6 md:mt-0">
+                        <div className="mt-6 md:mt-0 flex gap-3">
+                            <ThemeToggle />
                             {user?.role === 'admin' && (
                                 <Link to="/admin">
                                     <motion.button
@@ -137,7 +149,7 @@ const Dashboard = () => {
                     </div>
 
                     {/* Stats Grid */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
                         <StatCard
                             icon={Clock}
                             label="Mindfulness Time"
@@ -150,23 +162,20 @@ const Dashboard = () => {
                             value={stats.sessionCount}
                             color={{ bg: 'bg-green-100', text: 'text-green-600', border: 'border-green-500', shadow: 'green' }}
                         />
-                        <StatCard
-                            icon={Calendar}
-                            label="Active Days"
-                            value="12"
-                            color={{ bg: 'bg-purple-100', text: 'text-purple-600', border: 'border-purple-500', shadow: 'purple' }}
-                        />
-                        <StatCard
-                            icon={Award}
-                            label="Current Streak"
-                            value="3 Days"
-                            color={{ bg: 'bg-orange-100', text: 'text-orange-600', border: 'border-orange-500', shadow: 'orange' }}
-                        />
+                        <StreakCard token={user.token} />
                     </div>
 
+                    {/* Mood Chart */}
+                    {activities.length > 0 && (
+                        <div className="mb-16">
+                            <h2 className="text-2xl font-bold mb-6 pl-2 border-l-4 border-primary">Your Mood Journey</h2>
+                            <MoodChart activities={activities} />
+                        </div>
+                    )}
+
                     {/* Main Actions - 3D Cards */}
-                    <h2 className="text-2xl font-bold text-gray-800 mb-8 pl-2 border-l-4 border-primary">Quick Actions</h2>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
+                    <h2 className="text-2xl font-bold mb-8 pl-2 border-l-4 border-primary">Quick Actions</h2>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
                         <Link to="/add-activity" className="block group">
                             <Tilt
                                 tiltMaxAngleX={5}
@@ -194,15 +203,55 @@ const Dashboard = () => {
                                 scale={1.02}
                                 className="h-full"
                             >
-                                <div className="glass-panel h-64 flex flex-col items-center justify-center p-8 border-2 border-transparent group-hover:border-secondary/30 transition-all cursor-pointer relative overflow-hidden bg-gradient-to-br from-white to-secondary/5">
+                                <div className="glass-panel h-64 flex flex-col items-center justify-center p-8 border-2 border-transparent group-hover:border-secondary/30 transition-all cursor-pointer relative overflow-hidden bg-gradient-to-br from-white dark:from-gray-800 to-secondary/5">
                                     <div className="absolute inset-0 bg-secondary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-xl" />
 
-                                    <div className="z-10 bg-white p-6 rounded-full shadow-xl shadow-secondary/20 mb-6 group-hover:scale-110 group-hover:shadow-secondary/40 transition-all duration-300">
+                                    <div className="z-10 bg-white dark:bg-gray-800 p-6 rounded-full shadow-xl shadow-secondary/20 mb-6 group-hover:scale-110 group-hover:shadow-secondary/40 transition-all duration-300">
                                         <History size={48} className="text-secondary" />
                                     </div>
 
-                                    <h3 className="text-2xl font-bold text-gray-800 z-10">View History</h3>
-                                    <p className="text-gray-500 mt-2 z-10 font-medium">Reflect on your past sessions</p>
+                                    <h3 className="text-2xl font-bold z-10">View History</h3>
+                                    <p className="opacity-70 mt-2 z-10 font-medium">Past sessions</p>
+                                </div>
+                            </Tilt>
+                        </Link>
+
+                        <Link to="/journal" className="block group">
+                            <Tilt
+                                tiltMaxAngleX={5}
+                                tiltMaxAngleY={5}
+                                scale={1.02}
+                                className="h-full"
+                            >
+                                <div className="glass-panel h-64 flex flex-col items-center justify-center p-8 border-2 border-transparent group-hover:border-purple-300 transition-all cursor-pointer relative overflow-hidden bg-gradient-to-br from-white dark:from-gray-800 to-purple-50 dark:to-purple-900/10">
+                                    <div className="absolute inset-0 bg-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-xl" />
+
+                                    <div className="z-10 bg-white dark:bg-gray-800 p-6 rounded-full shadow-xl shadow-purple-500/20 mb-6 group-hover:scale-110 group-hover:shadow-purple-500/40 transition-all duration-300">
+                                        <BookOpen size={48} className="text-purple-600" />
+                                    </div>
+
+                                    <h3 className="text-2xl font-bold z-10">Journal</h3>
+                                    <p className="opacity-70 mt-2 z-10 font-medium">Reflections</p>
+                                </div>
+                            </Tilt>
+                        </Link>
+
+                        <Link to="/guided-session" className="block group">
+                            <Tilt
+                                tiltMaxAngleX={5}
+                                tiltMaxAngleY={5}
+                                scale={1.02}
+                                className="h-full"
+                            >
+                                <div className="glass-panel h-64 flex flex-col items-center justify-center p-8 border-2 border-transparent group-hover:border-green-300 transition-all cursor-pointer relative overflow-hidden bg-gradient-to-br from-white dark:from-gray-800 to-green-50 dark:to-green-900/10">
+                                    <div className="absolute inset-0 bg-green-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-xl" />
+
+                                    <div className="z-10 bg-white dark:bg-gray-800 p-6 rounded-full shadow-xl shadow-green-500/20 mb-6 group-hover:scale-110 group-hover:shadow-green-500/40 transition-all duration-300">
+                                        <Timer size={48} className="text-green-600" />
+                                    </div>
+
+                                    <h3 className="text-2xl font-bold z-10">Guided Timer</h3>
+                                    <p className="opacity-70 mt-2 z-10 font-medium">Timed sessions</p>
                                 </div>
                             </Tilt>
                         </Link>
@@ -227,7 +276,7 @@ const Dashboard = () => {
                         </div>
                     </motion.div>
 
-                </motion.div>
+                </div>
             </div>
         </div>
     );

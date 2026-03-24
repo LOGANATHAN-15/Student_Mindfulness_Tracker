@@ -21,6 +21,19 @@ const activitySchema = new mongoose.Schema({
     },
     notes: {
         type: String
+    },
+    moodBefore: {
+        type: Number,
+        min: 1,
+        max: 10
+    },
+    moodAfter: {
+        type: Number,
+        min: 1,
+        max: 10
+    },
+    journalEntry: {
+        type: String
     }
 }, { timestamps: true });
 

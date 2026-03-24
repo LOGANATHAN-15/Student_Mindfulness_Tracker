@@ -3,22 +3,48 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    /* Light mode colors */
+    --bg-primary: #f8fafc;
+    --bg-secondary: #ffffff;
+    --bg-glass: rgba(255, 255, 255, 0.7);
+    --text-primary: #1f2937;
+    --text-secondary: #6b7280;
+    --border-color: rgba(255, 255, 255, 0.4);
+    --shadow-color: rgba(0, 0, 0, 0.1);
+  }
+
+  [data-theme="dark"] {
+    /* Dark mode colors */
+    --bg-primary: #0f172a;
+    --bg-secondary: #1e293b;
+    --bg-glass: rgba(30, 41, 59, 0.7);
+    --text-primary: #f1f5f9;
+    --text-secondary: #94a3b8;
+    --border-color: rgba(71, 85, 105, 0.4);
+    --shadow-color: rgba(0, 0, 0, 0.5);
+  }
+
   body {
-    @apply bg-background text-gray-800 antialiased;
+    @apply antialiased;
+    background: var(--bg-primary);
+    color: var(--text-primary);
     perspective: 1000px;
-    /* Enable global 3D perspective */
+    transition: background 0.3s ease, color 0.3s ease;
   }
 }
 
 /* Glassmorphism Utilities */
 .glass-panel {
-  @apply bg-white/70 backdrop-blur-md border border-white/40 shadow-xl rounded-2xl;
+  background: var(--bg-glass);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--border-color);
+  @apply shadow-xl rounded-2xl;
   box-shadow:
-    0 10px 30px -5px rgba(0, 0, 0, 0.1),
-    0 5px 15px -3px rgba(0, 0, 0, 0.05),
-    inset 0 0 20px rgba(255, 255, 255, 0.5);
-  /* Inner glow for glass effect */
+    0 10px 30px -5px var(--shadow-color),
+    0 5px 15px -3px var(--shadow-color);
   transform-style: preserve-3d;
+  transition: background 0.3s ease, border 0.3s ease;
 }
 
 /* Enhanced Gradient Background */

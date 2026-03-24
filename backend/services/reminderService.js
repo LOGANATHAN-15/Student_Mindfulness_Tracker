@@ -5,28 +5,28 @@ const Activity = require('../models/Activity');
 
 const setupReminders = () => {
     // IMPORTANT: Verify you have set EMAIL_USER and EMAIL_PASS in .env for this to work!
-    // Running every 5 minutes to check for users who logged out > 2 minutes ago (TESTING MODE).
-    cron.schedule('*/5 * * * *', async () => {
-        console.log('🔍 Checking for users who LOGGED OUT > 2 minutes ago...');
+    // Running daily to check for users who logged out > 24 hours ago (PRODUCTION MODE).
+    cron.schedule('0 0 * * *', async () => {
+        console.log('🔍 Checking for users who LOGGED OUT > 24 hours ago...');
 
         try {
-            const twoMinutesAgo = new Date(Date.now() - 2 * 60 * 1000);
+            const twentyFourHoursAgo = new Date(Date.now() - 24 * 60 * 60 * 1000);
 
-            // Find users whose 'lastLogout' time is older than 2 minutes ago
+            // Find users whose 'lastLogout' time is older than 24 hours ago
             // And ensure they actually HAVE a lastLogout time (meaning they logged out at least once)
             // Exclude admins
             const users = await User.find({
-                lastLogout: { $lt: twoMinutesAgo, $exists: true }, // Ensure field exists
+                lastLogout: { $lt: twentyFourHoursAgo, $exists: true }, // Ensure field exists
                 role: { $ne: 'admin' }
             });
 
             if (users.length > 0) {
-                console.log(`Found ${users.length} users who logged out > 2 minutes ago.`);
+                console.log(`Found ${users.length} users who logged out > 24 hours ago.`);
                 for (const user of users) {
                     await sendReminderEmail(user.email, user.username);
                 }
             } else {
-                console.log('No users found who logged out > 2 minutes ago.');
+                console.log('No users found who logged out > 24 hours ago.');
             }
         } catch (error) {
             console.error('Error running reminder cron job:', error);
@@ -51,10 +51,10 @@ const sendReminderEmail = async (email, username) => {
             from: '"Mindfulness Tracker" <noreply@mindfulnesstracker.com>',
             to: email,
             subject: "Gentle Reminder: Time to Unwind 🌿",
-            text: `Hi ${username},\n\nWe noticed you haven't been active for more than 2 minutes (TESTING MODE). We miss you! Come back and log a mindfulness activity.\n\nTake care,\nYour Mindfulness Team`,
+            text: `Hi ${username},\n\nWe noticed you haven't been active for more than 24 hours. We miss you! Come back and log a mindfulness activity.\n\nTake care,\nYour Mindfulness Team`,
             html: `<div style="font-family: sans-serif; color: #333;">
                     <h2>Hello ${username},</h2>
-                    <p>We noticed you haven't been active for more than 2 minutes (TESTING MODE).</p>
+                    <p>We noticed you haven't been active for more than 24 hours.</p>
                     <p>Remember, even <strong>5 minutes of breathing</strong> can make a huge difference in your day.</p>
                     <br>
                     <a href="http://localhost:5173/dashboard" style="background-color: #4ade80; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Log Activity Now</a>

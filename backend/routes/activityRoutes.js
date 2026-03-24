@@ -16,18 +16,30 @@ router.get('/', protect, async (req, res) => {
 // Create a new activity
 router.post('/', protect, async (req, res) => {
     try {
-        const { type, duration, date, notes } = req.body;
+        const { type, duration, date, notes, moodBefore, moodAfter, journalEntry } = req.body;
 
         const activity = new Activity({
             user: req.user._id,
             type,
             duration,
             date,
-            notes
+            notes,
+            moodBefore,
+            moodAfter,
+            journalEntry
         });
 
         const createdActivity = await activity.save();
-        res.status(201).json(createdActivity);
+
+        // Update streak
+        const { updateStreak } = require('../utils/streakCalculator');
+        const streakResult = await updateStreak(req.user._id, date || new Date());
+
+        res.status(201).json({
+            activity: createdActivity,
+            streak: streakResult.streak,
+            newAchievements: streakResult.newAchievements
+        });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }

@@ -1,29 +1,33 @@
-import { useState, useEffect, useContext } from 'react';
+import { useState, useContext } from 'react';
 import axios from 'axios';
 import AuthContext from '../context/AuthContext';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Trash2, Calendar, Clock, ArrowLeft } from 'lucide-react';
+import { Trash2, Calendar, Clock, ArrowLeft, BookOpen } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { moodEmojis } from '../components/MoodSelector';
+import useAutoLogout from '../hooks/useAutoLogout';
 
 const ActivityHistory = () => {
-    const { user } = useContext(AuthContext);
+    const { user, logout } = useContext(AuthContext);
+    useAutoLogout(logout);
     const [activities, setActivities] = useState([]);
+    const [expandedJournal, setExpandedJournal] = useState(null);
 
-    useEffect(() => {
-        const fetchActivities = async () => {
-            try {
-                const config = {
-                    headers: {
-                        Authorization: `Bearer ${user.token}`,
-                    },
-                };
-                const { data } = await axios.get('http://localhost:5000/api/activities', config);
-                setActivities(data);
-            } catch (error) {
-                console.error(error);
-            }
-        };
+    const fetchActivities = async () => {
+        try {
+            const config = {
+                headers: {
+                    Authorization: `Bearer ${user.token}`,
+                },
+            };
+            const { data } = await axios.get('http://localhost:5000/api/activities', config);
+            setActivities(data);
+        } catch (error) {
+            console.error(error);
+        }
+    };
 
+    useState(() => {
         if (user) fetchActivities();
     }, [user]);
 
@@ -82,8 +86,8 @@ const ActivityHistory = () => {
                                 <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-4">
                                     <div className="flex items-start gap-4">
                                         <div className={`p-3 rounded-xl ${activity.type === 'Meditation' ? 'bg-green-100 text-green-600' :
-                                                activity.type === 'Yoga' ? 'bg-orange-100 text-orange-600' :
-                                                    'bg-blue-100 text-blue-600'
+                                            activity.type === 'Yoga' ? 'bg-orange-100 text-orange-600' :
+                                                'bg-blue-100 text-blue-600'
                                             }`}>
                                             {activity.type === 'Meditation' ? <span className="text-2xl">🧘</span> :
                                                 activity.type === 'Yoga' ? <span className="text-2xl">🤸</span> :
@@ -103,9 +107,60 @@ const ActivityHistory = () => {
                                                 day: 'numeric'
                                             })}</p>
                                             {activity.notes && (
-                                                <p className="text-gray-600 bg-gray-50 p-3 rounded-lg text-sm italic">
+                                                <p className="opacity-75 bg-gray-100 dark:bg-gray-800 p-3 rounded-lg text-sm italic">
                                                     "{activity.notes}"
                                                 </p>
+                                            )}
+
+                                            {/* Mood Display */}
+                                            {(activity.moodBefore || activity.moodAfter) && (
+                                                <div className="flex items-center gap-3 mt-3 p-3 bg-gradient-to-r from-blue-50 to-green-50 dark:from-blue-900/20 dark:to-green-900/20 rounded-lg">
+                                                    {activity.moodBefore && (
+                                                        <div className="flex items-center gap-2">
+                                                            <span className="text-sm font-medium opacity-70">Before:</span>
+                                                            <span className="text-xl">{moodEmojis[activity.moodBefore]?.emoji}</span>
+                                                            <span className="text-sm font-bold">{activity.moodBefore}/10</span>
+                                                        </div>
+                                                    )}
+                                                    {activity.moodBefore && activity.moodAfter && (
+                                                        <span className="text-xl">→</span>
+                                                    )}
+                                                    {activity.moodAfter && (
+                                                        <div className="flex items-center gap-2">
+                                                            <span className="text-sm font-medium opacity-70">After:</span>
+                                                            <span className="text-xl">{moodEmojis[activity.moodAfter]?.emoji}</span>
+                                                            <span className="text-sm font-bold">{activity.moodAfter}/10</span>
+                                                        </div>
+                                                    )}
+                                                    {activity.moodBefore && activity.moodAfter && activity.moodAfter > activity.moodBefore && (
+                                                        <span className="ml-auto px-2 py-1 bg-green-500 text-white text-xs rounded-full font-bold">
+                                                            +{activity.moodAfter - activity.moodBefore}
+                                                        </span>
+                                                    )}
+                                                </div>
+                                            )}
+
+                                            {/* Journal Entry Preview */}
+                                            {activity.journalEntry && (
+                                                <div className="mt-3">
+                                                    <button
+                                                        onClick={() => setExpandedJournal(expandedJournal === activity._id ? null : activity._id)}
+                                                        className="flex items-center gap-2 text-sm font-medium text-primary hover:underline"
+                                                    >
+                                                        <BookOpen size={16} />
+                                                        {expandedJournal === activity._id ? 'Hide' : 'View'} Journal Entry
+                                                    </button>
+                                                    {expandedJournal === activity._id && (
+                                                        <motion.div
+                                                            initial={{ opacity: 0, height: 0 }}
+                                                            animate={{ opacity: 1, height: 'auto' }}
+                                                            exit={{ opacity: 0, height: 0 }}
+                                                            className="mt-2 p-4 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg border-l-4 border-yellow-500"
+                                                        >
+                                                            <p className="text-sm whitespace-pre-wrap">{activity.journalEntry}</p>
+                                                        </motion.div>
+                                                    )}
+                                                </div>
                                             )}
                                         </div>
                                     </div>
