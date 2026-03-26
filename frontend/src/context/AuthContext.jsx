@@ -1,5 +1,5 @@
 import { createContext, useState, useEffect } from 'react';
-import axios from 'axios';
+import api, { setAuthToken } from '../utils/api';
 import { googleLogout } from '@react-oauth/google';
 
 const AuthContext = createContext();
@@ -12,14 +12,16 @@ export const AuthProvider = ({ children }) => {
         const userInfo = JSON.parse(localStorage.getItem('userInfo'));
         if (userInfo) {
             setUser(userInfo);
+            setAuthToken(userInfo.token);
         }
         setLoading(false);
     }, []);
 
     const login = async (email, password) => {
         try {
-            const { data } = await axios.post('https://student-mindfulness-tracker.onrender.com/api/auth/login', { email, password });
+            const { data } = await api.post('/auth/login', { email, password });
             setUser(data);
+            setAuthToken(data.token);
             localStorage.setItem('userInfo', JSON.stringify(data));
             return { success: true };
         } catch (error) {
@@ -29,8 +31,9 @@ export const AuthProvider = ({ children }) => {
 
     const googleLogin = async (token) => {
         try {
-            const { data } = await axios.post('https://student-mindfulness-tracker.onrender.com/api/auth/google', { token });
+            const { data } = await api.post('/auth/google', { token });
             setUser(data);
+            setAuthToken(data.token);
             localStorage.setItem('userInfo', JSON.stringify(data));
             return { success: true };
         } catch (error) {
@@ -40,8 +43,9 @@ export const AuthProvider = ({ children }) => {
 
     const register = async (username, email, password) => {
         try {
-            const { data } = await axios.post('https://student-mindfulness-tracker.onrender.com/api/auth/register', { username, email, password });
+            const { data } = await api.post('/auth/register', { username, email, password });
             setUser(data);
+            setAuthToken(data.token);
             localStorage.setItem('userInfo', JSON.stringify(data));
             return { success: true };
         } catch (error) {
@@ -52,17 +56,14 @@ export const AuthProvider = ({ children }) => {
     const logout = async () => {
         try {
             if (user && user.token) {
-                await axios.post('https://student-mindfulness-tracker.onrender.com/api/auth/logout', {}, {
-                    headers: {
-                        Authorization: `Bearer ${user.token}`
-                    }
-                });
+                await api.post('/auth/logout');
             }
         } catch (error) {
             console.error("Logout API failed", error);
         } finally {
             googleLogout();
             setUser(null);
+            setAuthToken(null);
             localStorage.removeItem('userInfo');
         }
     };

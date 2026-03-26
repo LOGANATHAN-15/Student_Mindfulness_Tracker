@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const dotenv = require('dotenv');
+const path = require('path');
 const setupReminders = require('./services/reminderService');
 
 dotenv.config();
@@ -25,12 +26,17 @@ mongoose.set('strictQuery', false);
 mongoose.set('bufferCommands', false); 
 mongoose.plugin((schema) => { schema.set('bufferCommands', false); });
 
-// Routes
+// API Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/activities', activityRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/streaks', streakRoutes);
 app.use('/api/journals', journalRoutes);
+
+// Static File Serving (Production)
+// We look for the frontend build in the parent's frontend directory
+const frontendPath = path.join(__dirname, '../frontend/dist');
+app.use(express.static(frontendPath));
 
 // Database Connection
 mongoose.connect(process.env.MONGODB_URI)
@@ -51,9 +57,15 @@ mongoose.connect(process.env.MONGODB_URI)
         console.log('Double-check your password in .env and ensure your IP is whitelisted in MongoDB Atlas.');
     });
 
-// Basic Route
-app.get('/', (req, res) => {
-    res.send('Mindfulness Tracker API is running');
+// Handle SPA Routing (Catch-all)
+// This MUST be after all API routes and static file middleware
+app.get('*', (req, res) => {
+    // Only serve index.html for non-API routes
+    if (!req.path.startsWith('/api')) {
+        res.sendFile(path.join(frontendPath, 'index.html'));
+    } else {
+        res.status(404).json({ message: 'API route not found' });
+    }
 });
 
 // Error Handling Middleware
@@ -61,7 +73,3 @@ app.use((err, req, res, next) => {
     console.error(err.stack);
     res.status(500).json({ message: 'Something went wrong!' });
 });
-
-// No changes needed here, app.listen has been moved up into the .then() block
-// to ensure the DB is ready before we accept requests.
-

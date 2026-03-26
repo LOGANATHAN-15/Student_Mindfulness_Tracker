@@ -273,16 +273,35 @@ You need to restart both servers for the changes to take effect:
 
 ---
 
-## 🎉 Success!
+## 🌍 Step 10: Production Deployment
 
-If you've completed all the steps, your Google Sign-In should now be working!
+When you deploy your app to production (e.g., Render, Netlify, Vercel), you **MUST** update your Google Cloud Console settings, otherwise Google Login will fail with a `redirect_uri_mismatch` error.
 
-**Need Help?** Let me know which step you're stuck on, and I'll help you troubleshoot.
+### 1. Update Authorized Origins & Redirects
+1. Go back to [Google Cloud Console > Credentials](https://console.cloud.google.com/apis/credentials).
+2. Click the **edit icon** (pencil) for your OAuth 2.0 Client ID.
+3. Under **Authorized JavaScript origins**, click **+ ADD URI** and enter your production URL (e.g., `https://mindfulness-tracker.onrender.com`).
+4. Under **Authorized redirect URIs**, click **+ ADD URI** and enter your production URL **WITHOUT** a trailing slash (e.g., `https://mindfulness-tracker.onrender.com`).
+5. Click **SAVE**.
+
+> ⚠️ **Note**: It may take up to 5-10 minutes for Google to update these settings.
+
+### 2. Set Production Environment Variables
+On your deployment platform (Render, Netlify, etc.), add the following environment variables in their dashboard:
+
+- **Frontend Environment Variables**:
+  - `VITE_GOOGLE_CLIENT_ID`: Your Google Client ID
+  - `VITE_API_URL`: `https://your-backend-url.onrender.com/api` (or just `/api` if frontend is served by the backend)
+
+- **Backend Environment Variables**:
+  - `GOOGLE_CLIENT_ID`: Your Google Client ID
+  - `JWT_SECRET`: A strong secret key
+  - `MONGODB_URI`: Your production MongoDB connection string
 
 ---
 
-## 🔒 Security Notes
+## 🎉 Success!
 
-- **Never commit your `.env` files to Git** - They should already be in `.gitignore`
-- The Client ID is not secret, but it's best practice to keep it in environment variables
-- For production deployment, you'll need to add your production URL to the authorized origins/redirects
+Your Mindfulness Tracker is now equipped with secure Google Authentication for both local development and production! 
+
+**Need Help?** If you encounter any "Error 400" screens, double-check your URLs in the Google Console. They must match EXACTLY.

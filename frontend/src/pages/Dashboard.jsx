@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import AuthContext from '../context/AuthContext';
+import api from '../utils/api';
 import { motion } from 'framer-motion';
 import Tilt from 'react-parallax-tilt';
 import {
@@ -20,7 +21,6 @@ import {
     Timer
 } from 'lucide-react';
 import useAutoLogout from '../hooks/useAutoLogout';
-import axios from 'axios';
 import ThemeToggle from '../components/ThemeToggle';
 import StreakCard from '../components/StreakCard';
 import MoodChart from '../components/MoodChart';
@@ -35,8 +35,7 @@ const Dashboard = () => {
     useEffect(() => {
         const fetchStats = async () => {
             try {
-                const config = { headers: { Authorization: `Bearer ${user.token}` } };
-                const { data } = await axios.get('https://student-mindfulness-tracker.onrender.com/api/activities', config);
+                const { data } = await api.get('/activities');
 
                 const totalDuration = data.reduce((acc, curr) => acc + curr.duration, 0);
                 setStats({ totalDuration, sessionCount: data.length });

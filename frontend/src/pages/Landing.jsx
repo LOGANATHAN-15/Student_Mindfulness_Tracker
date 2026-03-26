@@ -37,16 +37,16 @@ const Landing = () => {
                             </span>
                         </Tilt>
 
-                        <h1 className="text-6xl md:text-8xl font-black text-gray-900 mb-8 leading-tight tracking-tighter drop-shadow-sm">
+                        <h1 className="text-4xl sm:text-6xl md:text-8xl font-black text-gray-900 mb-8 leading-tight tracking-tighter drop-shadow-sm">
                             Find your <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary relative inline-block">
                                 Inner Zen
-                                <svg className="absolute w-full h-3 -bottom-1 left-0 text-primary opacity-40" viewBox="0 0 100 10" preserveAspectRatio="none">
+                                <svg className="absolute w-full h-2 sm:h-3 -bottom-1 left-0 text-primary opacity-40" viewBox="0 0 100 10" preserveAspectRatio="none">
                                     <path d="M0 5 Q 50 10 100 5" stroke="currentColor" strokeWidth="6" fill="none" />
                                 </svg>
                             </span>
                         </h1>
 
-                        <p className="text-2xl text-gray-600 mb-12 max-w-3xl mx-auto leading-relaxed font-light">
+                        <p className="text-lg sm:text-2xl text-gray-600 mb-12 max-w-3xl mx-auto leading-relaxed font-light px-4">
                             A <span className="font-semibold text-gray-800">premium</span> space to track your meditation, yoga, and breathing exercises.
                             Build consistent habits in a distraction-free environment.
                         </p>

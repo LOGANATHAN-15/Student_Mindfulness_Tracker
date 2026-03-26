@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { BookOpen, Plus, Search, Tag, Edit2, Trash2, Calendar } from 'lucide-react';
 import AuthContext from '../context/AuthContext';
 import useAutoLogout from '../hooks/useAutoLogout';
-import axios from 'axios';
+import api from '../utils/api';
 import MoodSelector, { moodEmojis } from '../components/MoodSelector';
 
 const Journal = () => {
@@ -30,8 +30,7 @@ const Journal = () => {
 
     const fetchJournals = async () => {
         try {
-            const config = { headers: { Authorization: `Bearer ${user.token}` } };
-            const { data } = await axios.get('https://student-mindfulness-tracker.onrender.com/api/journals', config);
+            const { data } = await api.get('/journals');
             setJournals(data);
         } catch (error) {
             console.error('Error fetching journals:', error);
@@ -41,16 +40,10 @@ const Journal = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const config = { headers: { Authorization: `Bearer ${user.token}` } };
-
             if (editingJournal) {
-                await axios.put(
-                    `https://student-mindfulness-tracker.onrender.com/api/journals/${editingJournal._id}`,
-                    formData,
-                    config
-                );
+                await api.put(`/journals/${editingJournal._id}`, formData);
             } else {
-                await axios.post('https://student-mindfulness-tracker.onrender.com/api/journals', formData, config);
+                await api.post('/journals', formData);
             }
 
             fetchJournals();
@@ -65,8 +58,7 @@ const Journal = () => {
         if (!window.confirm('Are you sure you want to delete this journal entry?')) return;
 
         try {
-            const config = { headers: { Authorization: `Bearer ${user.token}` } };
-            await axios.delete(`https://student-mindfulness-tracker.onrender.com/api/journals/${id}`, config);
+            await api.delete(`/journals/${id}`);
             fetchJournals();
         } catch (error) {
             console.error('Error deleting journal:', error);

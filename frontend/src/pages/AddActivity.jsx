@@ -1,5 +1,5 @@
 import { useState, useContext, useEffect, useRef } from 'react';
-import axios from 'axios';
+import api from '../utils/api';
 import AuthContext from '../context/AuthContext';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -74,14 +74,8 @@ const AddActivity = () => {
         e.preventDefault();
 
         try {
-            const config = {
-                headers: {
-                    Authorization: `Bearer ${user.token}`,
-                },
-            };
-
-            const response = await axios.post(
-                'https://student-mindfulness-tracker.onrender.com/api/activities',
+            const response = await api.post(
+                '/activities',
                 {
                     type,
                     duration,
@@ -89,8 +83,7 @@ const AddActivity = () => {
                     moodBefore,
                     moodAfter,
                     journalEntry
-                },
-                config
+                }
             );
 
             if (response.data.newAchievements && response.data.newAchievements.length > 0) {
