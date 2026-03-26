@@ -20,7 +20,7 @@ const ActivityHistory = () => {
                     Authorization: `Bearer ${user.token}`,
                 },
             };
-            const { data } = await axios.get('http://localhost:5000/api/activities', config);
+            const { data } = await axios.get('https://student-mindfulness-tracker.onrender.com/api/activities', config);
             setActivities(data);
         } catch (error) {
             console.error(error);
@@ -39,7 +39,7 @@ const ActivityHistory = () => {
                         Authorization: `Bearer ${user.token}`,
                     },
                 };
-                await axios.delete(`http://localhost:5000/api/activities/${id}`, config);
+                await axios.delete(`https://student-mindfulness-tracker.onrender.com/api/activities/${id}`, config);
                 setActivities(activities.filter((activity) => activity._id !== id));
             } catch (error) {
                 console.error(error);

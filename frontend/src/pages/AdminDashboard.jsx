@@ -14,10 +14,10 @@ const AdminDashboard = () => {
             try {
                 const config = { headers: { Authorization: `Bearer ${user.token}` } };
 
-                const usersRes = await axios.get('http://localhost:5000/api/admin/users', config);
+                const usersRes = await axios.get('https://student-mindfulness-tracker.onrender.com/api/admin/users', config);
                 setUsers(usersRes.data);
 
-                const statsRes = await axios.get('http://localhost:5000/api/admin/stats', config);
+                const statsRes = await axios.get('https://student-mindfulness-tracker.onrender.com/api/admin/stats', config);
                 setStats(statsRes.data);
             } catch (error) {
                 console.error("Error fetching admin data", error);

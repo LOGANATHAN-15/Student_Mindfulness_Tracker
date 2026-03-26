@@ -81,7 +81,7 @@ const AddActivity = () => {
             };
 
             const response = await axios.post(
-                'http://localhost:5000/api/activities',
+                'https://student-mindfulness-tracker.onrender.com/api/activities',
                 {
                     type,
                     duration,

@@ -31,7 +31,7 @@ const Journal = () => {
     const fetchJournals = async () => {
         try {
             const config = { headers: { Authorization: `Bearer ${user.token}` } };
-            const { data } = await axios.get('http://localhost:5000/api/journals', config);
+            const { data } = await axios.get('https://student-mindfulness-tracker.onrender.com/api/journals', config);
             setJournals(data);
         } catch (error) {
             console.error('Error fetching journals:', error);
@@ -45,12 +45,12 @@ const Journal = () => {
 
             if (editingJournal) {
                 await axios.put(
-                    `http://localhost:5000/api/journals/${editingJournal._id}`,
+                    `https://student-mindfulness-tracker.onrender.com/api/journals/${editingJournal._id}`,
                     formData,
                     config
                 );
             } else {
-                await axios.post('http://localhost:5000/api/journals', formData, config);
+                await axios.post('https://student-mindfulness-tracker.onrender.com/api/journals', formData, config);
             }
 
             fetchJournals();
@@ -66,7 +66,7 @@ const Journal = () => {
 
         try {
             const config = { headers: { Authorization: `Bearer ${user.token}` } };
-            await axios.delete(`http://localhost:5000/api/journals/${id}`, config);
+            await axios.delete(`https://student-mindfulness-tracker.onrender.com/api/journals/${id}`, config);
             fetchJournals();
         } catch (error) {
             console.error('Error deleting journal:', error);

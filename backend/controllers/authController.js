@@ -20,9 +20,11 @@ const registerUser = async (req, res) => {
             return res.status(400).json({ message: 'Invalid email format' });
         }
 
+        console.log(`📝 Registration attempt for: ${email}`);
         const userExists = await User.findOne({ email });
 
         if (userExists) {
+            console.log(`⚠️ Registration failed: User ${email} already exists`);
             return res.status(400).json({ message: 'User already exists' });
         }
 
@@ -33,6 +35,7 @@ const registerUser = async (req, res) => {
         });
 
         if (user) {
+            console.log(`✅ User registered successfully: ${email}`);
             res.status(201).json({
                 _id: user._id,
                 username: user.username,
@@ -41,9 +44,11 @@ const registerUser = async (req, res) => {
                 token: generateToken(user._id),
             });
         } else {
+            console.log(`❌ Registration failed: Invalid user data for ${email}`);
             res.status(400).json({ message: 'Invalid user data' });
         }
     } catch (error) {
+        console.error(`❌ Registration Error for ${req.body.email}:`, error.message);
         res.status(500).json({ message: error.message });
     }
 };
@@ -52,10 +57,17 @@ const registerUser = async (req, res) => {
 const authUser = async (req, res) => {
     try {
         const { email, password } = req.body;
-
+        console.log(`🔑 Login attempt for: ${email}`);
         const user = await User.findOne({ email });
 
-        if (user && (await user.matchPassword(password))) {
+        if (!user) {
+            console.log(`❌ Login failed: No user found with email ${email}`);
+            return res.status(401).json({ message: 'Invalid email or password' });
+        }
+
+        const isMatch = await user.matchPassword(password);
+        if (isMatch) {
+            console.log(`✅ Login successful: ${email}`);
             user.lastLogin = Date.now();
             await user.save();
 
@@ -67,9 +79,11 @@ const authUser = async (req, res) => {
                 token: generateToken(user._id),
             });
         } else {
+            console.log(`❌ Login failed: Incorrect password for ${email}`);
             res.status(401).json({ message: 'Invalid email or password' });
         }
     } catch (error) {
+        console.error(`❌ Auth Error for ${req.body.email}:`, error.message);
         res.status(500).json({ message: error.message });
     }
 };

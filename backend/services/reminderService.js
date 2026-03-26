@@ -47,6 +47,8 @@ const sendReminderEmail = async (email, username) => {
     });
 
     try {
+        const frontendUrl = process.env.FRONTEND_URL || process.env.CLIENT_URL || 'http://localhost:5173';
+
         let info = await transporter.sendMail({
             from: '"Mindfulness Tracker" <noreply@mindfulnesstracker.com>',
             to: email,
@@ -57,7 +59,7 @@ const sendReminderEmail = async (email, username) => {
                     <p>We noticed you haven't been active for more than 24 hours.</p>
                     <p>Remember, even <strong>5 minutes of breathing</strong> can make a huge difference in your day.</p>
                     <br>
-                    <a href="http://localhost:5173/dashboard" style="background-color: #4ade80; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Log Activity Now</a>
+                    <a href="${frontendUrl}/dashboard" style="background-color: #4ade80; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Log Activity Now</a>
                     <br><br>
                     <p>Take care,<br>Your Mindfulness Team 🌿</p>
                    </div>`

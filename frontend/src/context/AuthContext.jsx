@@ -18,7 +18,7 @@ export const AuthProvider = ({ children }) => {
 
     const login = async (email, password) => {
         try {
-            const { data } = await axios.post('http://localhost:5000/api/auth/login', { email, password });
+            const { data } = await axios.post('https://student-mindfulness-tracker.onrender.com/api/auth/login', { email, password });
             setUser(data);
             localStorage.setItem('userInfo', JSON.stringify(data));
             return { success: true };
@@ -29,7 +29,7 @@ export const AuthProvider = ({ children }) => {
 
     const googleLogin = async (token) => {
         try {
-            const { data } = await axios.post('http://localhost:5000/api/auth/google', { token });
+            const { data } = await axios.post('https://student-mindfulness-tracker.onrender.com/api/auth/google', { token });
             setUser(data);
             localStorage.setItem('userInfo', JSON.stringify(data));
             return { success: true };
@@ -40,7 +40,7 @@ export const AuthProvider = ({ children }) => {
 
     const register = async (username, email, password) => {
         try {
-            const { data } = await axios.post('http://localhost:5000/api/auth/register', { username, email, password });
+            const { data } = await axios.post('https://student-mindfulness-tracker.onrender.com/api/auth/register', { username, email, password });
             setUser(data);
             localStorage.setItem('userInfo', JSON.stringify(data));
             return { success: true };
@@ -52,7 +52,7 @@ export const AuthProvider = ({ children }) => {
     const logout = async () => {
         try {
             if (user && user.token) {
-                await axios.post('http://localhost:5000/api/auth/logout', {}, {
+                await axios.post('https://student-mindfulness-tracker.onrender.com/api/auth/logout', {}, {
                     headers: {
                         Authorization: `Bearer ${user.token}`
                     }

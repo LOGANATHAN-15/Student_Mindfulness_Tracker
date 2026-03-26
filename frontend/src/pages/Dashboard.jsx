@@ -36,7 +36,7 @@ const Dashboard = () => {
         const fetchStats = async () => {
             try {
                 const config = { headers: { Authorization: `Bearer ${user.token}` } };
-                const { data } = await axios.get('http://localhost:5000/api/activities', config);
+                const { data } = await axios.get('https://student-mindfulness-tracker.onrender.com/api/activities', config);
 
                 const totalDuration = data.reduce((acc, curr) => acc + curr.duration, 0);
                 setStats({ totalDuration, sessionCount: data.length });

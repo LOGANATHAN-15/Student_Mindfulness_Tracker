@@ -16,7 +16,7 @@ const StreakCard = ({ token }) => {
         const fetchStreak = async () => {
             try {
                 const config = { headers: { Authorization: `Bearer ${token}` } };
-                const { data } = await axios.get('http://localhost:5000/api/streaks', config);
+                const { data } = await axios.get('https://student-mindfulness-tracker.onrender.com/api/streaks', config);
                 setStreakData(data);
             } catch (error) {
                 console.error('Error fetching streak:', error);
