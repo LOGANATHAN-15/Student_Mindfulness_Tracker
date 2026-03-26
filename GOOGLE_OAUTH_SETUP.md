@@ -298,10 +298,31 @@ On your deployment platform (Render, Netlify, etc.), add the following environme
   - `JWT_SECRET`: A strong secret key
   - `MONGODB_URI`: Your production MongoDB connection string
 
+## ▲ Step 11: Extra Setup for Vercel Users
+
+If you are using **Vercel** to host your frontend and **Render** to host your backend, you must handle routing and API connectivity carefully.
+
+### 1. Fix 404 on Reload
+Vercel needs a `vercel.json` file in your `frontend/` folder to handle React Router paths. I've automatically added this file for you. It tells Vercel: "If anyone asks for a page like `/login`, just show them `index.html` first."
+
+### 2. Set API Connection Variable
+Go to your **[Vercel Dashboard](https://vercel.com/)** > **Settings** > **Environment Variables** and add:
+
+- **Key**: `VITE_API_URL`
+- **Value**: `https://your-backend-url.onrender.com/api` (Replace with your actual Render URL)
+
+### 3. Push Changes Again
+After creating the `vercel.json`, you must commit and push to GitHub so Vercel can see the new configuration:
+```bash
+git add .
+git commit -m "Add vercel.json for routing fix"
+git push origin main
+```
+
 ---
 
 ## 🎉 Success!
 
-Your Mindfulness Tracker is now equipped with secure Google Authentication for both local development and production! 
+Your Mindfulness Tracker is now equipped with secure Google Authentication and proper routing for both Render and Vercel!
 
-**Need Help?** If you encounter any "Error 400" screens, double-check your URLs in the Google Console. They must match EXACTLY.
+**Need Help?** If login still fails, check the **browser console (F12)** to see the Network errors. It will show if the frontend is trying to connect to the correct backend URL.
