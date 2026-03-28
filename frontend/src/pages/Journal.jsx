@@ -89,37 +89,37 @@ const Journal = () => {
     );
 
     return (
-        <div className="min-h-screen transition-colors duration-500 pb-20">
-            <div className="container mx-auto px-4 py-16 max-w-6xl">
+        <div className="min-h-screen transition-colors duration-300 pb-20">
+            <div className="container mx-auto px-4 py-12 max-w-6xl">
                 {/* Header */}
-                <div className="flex flex-col md:flex-row justify-between items-center gap-8 mb-16">
+                <div className="flex flex-col md:flex-row justify-between items-center gap-6 mb-12">
                     <div className="text-center md:text-left">
-                        <h1 className="text-6xl font-black tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-primary via-secondary to-accent-tertiary">
+                        <h1 className="text-4xl font-bold">
                             Reflection Journal
                         </h1>
-                        <p className="text-xl text-secondary font-medium mt-2">Your mindfulness journey in words</p>
+                        <p className="text-lg opacity-70 mt-1">Your mindfulness journey in words</p>
                     </div>
                     <motion.button
-                        whileHover={{ scale: 1.05, y: -5 }}
+                        whileHover={{ y: -2 }}
                         whileTap={{ scale: 0.95 }}
                         onClick={() => setShowCreateModal(true)}
-                        className="btn-premium"
+                        className="btn-premium px-8"
                     >
-                        <Plus size={24} strokeWidth={2.5} />
+                        <Plus size={20} />
                         New Entry
                     </motion.button>
                 </div>
 
                 {/* Search */}
-                <div className="glass-panel p-6 mb-10 border-primary/10">
+                <div className="glass-panel p-4 mb-8">
                     <div className="relative">
-                        <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-primary" size={24} strokeWidth={2.5} />
+                        <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-muted" size={20} />
                         <input
                             type="text"
-                            placeholder="Explore your reflections..."
+                            placeholder="Search your reflections..."
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
-                            className="input-premium pl-14 py-4 text-lg"
+                            className="input-premium pl-12 py-3"
                         />
                     </div>
                 </div>

@@ -98,35 +98,34 @@ const AddActivity = () => {
     };
 
     return (
-        <div className="container mx-auto px-4 py-20 max-w-2xl">
+        <div className="container mx-auto px-4 py-12 max-w-2xl">
             <motion.div
-                initial={{ opacity: 0, y: 30 }}
+                initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="glass-panel p-10 border-none shadow-[0_40px_80px_-20px_rgba(0,0,0,0.3)]"
+                className="glass-panel p-8"
             >
-                <div className="flex justify-between items-center mb-10">
-                    <h2 className="text-4xl font-black tracking-tighter">
-                        {isTimerRunning ? 'In the Moment' : isComplete ? 'Session Unified' : 'Prepare Space'}
+                <div className="flex justify-between items-center mb-8">
+                    <h2 className="text-2xl font-bold">
+                        {isTimerRunning ? 'Session in Progress' : isComplete ? 'Session Complete' : 'Plan Your Session'}
                     </h2>
-
-                    <button onClick={() => navigate('/dashboard')} className="p-2 text-muted hover:text-red-500 hover:rotate-90 transition-all duration-500">
-                        <X size={32} />
+                    <button onClick={() => navigate('/dashboard')} className="p-1 opacity-50 hover:opacity-100 transition-opacity">
+                        <X size={24} />
                     </button>
                 </div>
 
                 {!isTimerRunning && !isComplete && (
-                    <div className="space-y-8">
+                    <div className="space-y-6">
                         <div>
-                            <label className="block text-sm font-black uppercase tracking-widest text-muted mb-4">Focus Mode</label>
+                            <label className="block text-sm font-semibold mb-3">Activity Type</label>
                             <div className="grid grid-cols-3 gap-4">
                                 {['Meditation', 'Yoga', 'Breathing'].map((t) => (
                                     <button
                                         key={t}
                                         type="button"
                                         onClick={() => setType(t)}
-                                        className={`py-4 px-2 rounded-2xl border-2 transition-all duration-500 ${type === t
-                                            ? 'bg-primary/20 border-primary text-primary font-black shadow-lg shadow-primary/20 scale-105'
-                                            : 'border-border-color opacity-60 hover:opacity-100'
+                                        className={`py-3 px-2 rounded-xl border-2 transition-all ${type === t
+                                            ? 'bg-primary/10 border-primary text-primary font-bold'
+                                            : 'border-border-color opacity-70 hover:opacity-100'
                                             }`}
                                     >
                                         {t}
@@ -136,17 +135,17 @@ const AddActivity = () => {
                         </div>
 
                         <div>
-                            <label className="block text-sm font-black uppercase tracking-widest text-muted mb-4">Intended Duration (min)</label>
-                            <div className="relative group">
-                                <div className="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none group-focus-within:text-primary transition-colors">
-                                    <Clock size={24} strokeWidth={2.5} />
+                            <label className="block text-sm font-semibold mb-3">Duration (minutes)</label>
+                            <div className="relative">
+                                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                    <Clock size={20} className="text-primary" />
                                 </div>
                                 <input
                                     type="number"
                                     value={duration}
                                     onChange={(e) => setDuration(e.target.value)}
-                                    className="input-premium pl-14 py-5 text-2xl font-black"
-                                    placeholder="0"
+                                    className="input-premium pl-12 py-4"
+                                    placeholder="e.g. 10"
                                     required
                                     min="1"
                                 />
@@ -156,108 +155,109 @@ const AddActivity = () => {
                         <MoodSelector
                             value={moodBefore}
                             onChange={setMoodBefore}
-                            label="Check-in: Current State"
+                            label="How do you feel right now?"
                         />
 
                         <button
                             type="button"
                             onClick={startSession}
                             disabled={!duration || !moodBefore}
-                            className="w-full btn-premium py-5 text-xl tracking-tight disabled:opacity-30 disabled:grayscale"
+                            className="w-full btn-premium py-4 font-bold disabled:opacity-50"
                         >
-                            <Play size={24} fill="currentColor" strokeWidth={0} /> BE PRESENT
+                            Start Session
                         </button>
                     </div>
                 )}
 
                 {isTimerRunning && (
-                    <div className="flex flex-col items-center py-16 space-y-12">
-                        {/* Advanced Breathing Animation */}
+                    <div className="flex flex-col items-center py-12 space-y-10">
+                        {/* Breathing Animation */}
                         <div className="relative flex items-center justify-center">
                             <motion.div
                                 animate={{
-                                    scale: [1, 1.6, 1],
-                                    opacity: [0.2, 0.5, 0.2],
-                                    rotate: [0, 180, 360]
+                                    scale: [1, 1.4, 1],
+                                    opacity: [0.3, 0.6, 0.3]
                                 }}
                                 transition={{
-                                    duration: 10,
+                                    duration: 8,
                                     repeat: Infinity,
                                     ease: "easeInOut"
                                 }}
-                                className="absolute w-80 h-80 bg-gradient-to-tr from-primary to-secondary rounded-[3rem] blur-3xl"
+                                className="absolute w-64 h-64 bg-primary/20 rounded-full blur-3xl"
                             />
-                            <div className="relative z-10 text-center space-y-2">
-                                <motion.h3 
-                                    key={timeLeft}
-                                    initial={{ scale: 0.8, opacity: 0 }}
-                                    animate={{ scale: 1, opacity: 1 }}
-                                    className="text-8xl font-black tracking-tighter text-primary drop-shadow-2xl"
-                                >
+                            <div className="relative z-10 text-center">
+                                <h3 className="text-7xl font-bold tracking-tight text-primary">
                                     {formatTime(timeLeft)}
-                                </motion.h3>
-                                <p className="text-xl font-black uppercase tracking-[0.3em] text-secondary opacity-80 animate-pulse">
-                                    {type === 'Breathing' ? 'Expand ... Release' : 'Deep Awareness'}
+                                </h3>
+                                <p className="text-xl font-medium opacity-50 uppercase tracking-widest mt-2">
+                                    {type === 'Breathing' ? 'Inhale ... Exhale' : 'Just Breathe'}
                                 </p>
                             </div>
                         </div>
 
-                        <div className="flex gap-6">
+                        <div className="flex gap-4">
                             <button
                                 onClick={() => setIsTimerRunning(!isTimerRunning)}
-                                className="p-6 rounded-[2rem] bg-surface shadow-2xl text-primary hover:scale-110 active:scale-90 transition-all border border-border-color"
+                                className="p-5 rounded-full bg-surface shadow-xl text-primary hover:scale-110 active:scale-95 transition-all border border-border-color"
                             >
-                                {isTimerRunning ? <Pause size={42} fill="currentColor" strokeWidth={0} /> : <Play size={42} fill="currentColor" strokeWidth={0} />}
+                                {isTimerRunning ? <Pause size={32} fill="currentColor" /> : <Play size={32} fill="currentColor" />}
                             </button>
                             <button
                                 onClick={() => { setIsTimerRunning(false); setTimeLeft(0); handleTimerComplete(); }}
-                                className="p-6 rounded-[2rem] bg-red-500 text-white shadow-2xl hover:scale-110 active:scale-90 transition-all"
-                                title="Conclude"
+                                className="p-5 rounded-full bg-red-50 text-red-500 shadow-lg hover:scale-110 active:scale-95 transition-all border border-red-100"
                             >
-                                <X size={42} strokeWidth={3} />
+                                <X size={32} />
                             </button>
                         </div>
                     </div>
                 )}
 
-                <AnimatePresence mode="wait">
+                <AnimatePresence>
                     {isComplete && (
                         <motion.form
-                            initial={{ opacity: 0, y: 30 }}
-                            animate={{ opacity: 1, y: 0 }}
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
                             onSubmit={handleSubmit}
-                            className="space-y-10"
+                            className="space-y-8"
                         >
-                            <div className="p-8 bg-primary/10 rounded-[2.5rem] border border-primary/20 text-center space-y-2">
-                                <h3 className="text-3xl font-black text-primary">Space Harmonized</h3>
-                                <p className="text-lg font-medium opacity-80">You've successfully completed {duration}m of {type.toLowerCase()}.</p>
+                            <div className="p-6 bg-primary/5 rounded-2xl border border-primary/10 text-center">
+                                <h3 className="text-xl font-bold text-primary mb-1">Excellent work!</h3>
+                                <p className="opacity-70">You've completed your {duration} minute {type.toLowerCase()} session.</p>
                             </div>
 
                             <MoodSelector
                                 value={moodAfter}
                                 onChange={setMoodAfter}
-                                label="Post-Session Reflection"
+                                label="How do you feel after the session?"
                             />
 
-                            <div className="space-y-4">
-                                <label className="block text-sm font-black uppercase tracking-widest text-muted">Wisdom Captured (Notes)</label>
+                            <div className="space-y-3">
+                                <label className="block text-sm font-semibold">Any notes or reflections?</label>
                                 <textarea
                                     value={journalEntry}
                                     onChange={(e) => setJournalEntry(e.target.value)}
-                                    className="input-premium min-h-[160px] text-lg"
-                                    placeholder="What revealed itself to you?"
+                                    className="input-premium min-h-[120px] p-4"
+                                    placeholder="Write down your thoughts..."
                                 ></textarea>
                             </div>
 
                             <div className="flex gap-4">
-                                <button type="submit" className="flex-1 btn-premium py-5 text-xl">
-                                    <Save size={24} strokeWidth={2.5} /> UNIFY RECORDS
+                                <button type="submit" className="flex-1 btn-premium py-4 font-bold">
+                                    <Save size={20} /> Save & Finish
+                                </button>
+                                <button
+                                    type="button"
+                                    onClick={() => navigate('/dashboard')}
+                                    className="px-8 py-4 rounded-xl border border-border-color font-bold opacity-60 hover:opacity-100 transition-all"
+                                >
+                                    Discard
                                 </button>
                             </div>
                         </motion.form>
                     )}
                 </AnimatePresence>
             </motion.div>
+
 
 
             {/* Achievement Popup */}
