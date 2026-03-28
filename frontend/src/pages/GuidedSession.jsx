@@ -32,6 +32,7 @@ const GuidedSession = () => {
 
     const handleSessionComplete = (duration) => {
         setSessionDuration(duration);
+        // Navigate to AddActivity with pre-filled data
         setTimeout(() => {
             navigate('/add-activity', {
                 state: {
@@ -44,93 +45,96 @@ const GuidedSession = () => {
     };
 
     return (
-        <div className="min-h-screen pb-20 transition-colors duration-300">
+        <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 pb-20">
             <div className="container mx-auto px-4 py-12 max-w-6xl">
                 <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    className="space-y-12"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="space-y-8"
                 >
-                    <div className="text-center">
-                        <h1 className="text-4xl font-bold mb-4">Guided Sessions</h1>
-                        <p className="text-lg opacity-80 max-w-2xl mx-auto">
-                            Choose a practice that fits your current state of mind.
-                        </p>
+                    <div className="text-center space-y-2">
+                        <h1 className="text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">
+                            Guided Sessions
+                        </h1>
+                        <p className="text-xl opacity-70">A specialized practice for your wellbeing</p>
                     </div>
 
                     {!selectedType ? (
-                        <div className="space-y-8">
-                            <h2 className="text-2xl font-bold text-center mb-8">Choose Your Practice</h2>
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div className="space-y-4">
+                            <h2 className="text-2xl font-bold text-center mb-6">Choose Your Practice</h2>
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                                 {activityTypes.map(({ name, icon: Icon, color, description }, index) => (
-                                    <motion.div
+                                    <motion.button
                                         key={name}
-                                        whileHover={{ y: -5 }}
-                                        className="glass-panel p-8 flex flex-col items-center text-center gap-6"
+                                        initial={{ opacity: 0, y: 30 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        transition={{ delay: index * 0.2, duration: 0.5, ease: "easeOut" }}
+                                        onClick={() => setSelectedType(name)}
+                                        whileHover={{ y: -10 }}
+                                        whileTap={{ scale: 0.95 }}
+                                        className={`glass-panel p-10 flex flex-col items-center text-center gap-6 cursor-pointer bg-gradient-to-br ${color} text-white shadow-2xl relative overflow-hidden group`}
                                     >
-                                        <div className={`p-5 rounded-2xl bg-gradient-to-br ${color} text-white shadow-lg`}>
-                                            <Icon size={48} />
+                                        <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:scale-125 transition-transform">
+                                            <Icon size={180} />
                                         </div>
 
-                                        <div className="space-y-2">
-                                            <h3 className="text-2xl font-bold">{name}</h3>
-                                            <p className="opacity-70 text-sm leading-relaxed">
+                                        <div className="relative z-10 p-5 bg-white/20 rounded-full backdrop-blur-md">
+                                            <Icon size={56} />
+                                        </div>
+
+                                        <div className="relative z-10">
+                                            <h3 className="text-3xl font-black mb-3">{name}</h3>
+                                            <p className="text-white/80 font-medium leading-relaxed">
                                                 {description}
                                             </p>
                                         </div>
 
-                                        <button
-                                            onClick={() => setSelectedType(name)}
-                                            className="w-full py-3 px-6 bg-primary/10 hover:bg-primary/20 text-primary font-bold rounded-xl transition-all"
-                                        >
-                                            Start Session
-                                        </button>
-                                    </motion.div>
+                                        <div className="relative z-10 mt-4 px-6 py-2 bg-white/20 rounded-full text-sm font-bold backdrop-blur-md group-hover:bg-white text-white group-hover:text-primary transition-all">
+                                            Start {name}
+                                        </div>
+                                    </motion.button>
                                 ))}
                             </div>
                         </div>
                     ) : (
                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
-                            <motion.div 
-                                initial={{ opacity: 0, x: -20 }}
-                                animate={{ opacity: 1, x: 0 }}
-                                className="space-y-6"
-                            >
-                                <button
-                                    onClick={() => setSelectedType(null)}
-                                    className="text-primary font-bold flex items-center gap-2 hover:translate-x-[-4px] transition-transform"
-                                >
-                                    ← Back to Selection
-                                </button>
-                                
-                                <div className="glass-panel p-8">
-                                    <h2 className="text-3xl font-bold mb-6">{selectedType}</h2>
-                                    <SessionTimer
-                                        onComplete={handleSessionComplete}
-                                        activityType={selectedType}
-                                    />
+                            <div className="space-y-6">
+                                <div className="text-center lg:text-left">
+                                    <h2 className="text-3xl font-bold mb-2">{selectedType} Session</h2>
+                                    <button
+                                        onClick={() => setSelectedType(null)}
+                                        className="text-sm text-primary hover:underline"
+                                    >
+                                        ← Change Activity
+                                    </button>
                                 </div>
-                            </motion.div>
 
+                                <SessionTimer
+                                    onComplete={handleSessionComplete}
+                                    activityType={selectedType}
+                                />
+                            </div>
+
+                            {/* YouTube Playlist Panel */}
                             <motion.div
                                 initial={{ opacity: 0, x: 20 }}
                                 animate={{ opacity: 1, x: 0 }}
-                                className="glass-panel p-6 h-full min-h-[450px] flex flex-col"
+                                className="glass-panel card-bg p-6 h-full min-h-[400px] flex flex-col"
                             >
                                 <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
-                                    <Activity size={20} className="text-primary" /> Recommended Practice
+                                    <Activity size={20} className="text-primary" />
+                                    Recommended Playlist
                                 </h3>
-                                
-                                <div className="flex-1 rounded-2xl overflow-hidden bg-black/10">
+                                <div className="flex-1 rounded-xl overflow-hidden shadow-inner bg-gray-900">
                                     <iframe
                                         width="100%"
                                         height="100%"
                                         className="min-h-[300px]"
-                                        src={`${selectedType === 'Yoga' ? 'https://www.youtube.com/embed/videoseries?list=PLvLW4nXp--xcMYmQCTTDE9qbt5T97wORi' : 
-                                            selectedType === 'Meditation' ? 'https://www.youtube.com/embed/6VR0G_-11ec' : 
-                                                'https://www.youtube.com/embed/M4xqOoZRiDU' 
+                                        src={`${selectedType === 'Yoga' ? 'https://www.youtube.com/embed/videoseries?list=PLvLW4nXp--xcMYmQCTTDE9qbt5T97wORi' : // User provided playlist
+                                            selectedType === 'Meditation' ? 'https://www.youtube.com/embed/6VR0G_-11ec' : // User provided single video
+                                                'https://www.youtube.com/embed/M4xqOoZRiDU' // User provided single video for breathing
                                             }`}
-                                        title={`${selectedType} Video`}
+                                        title={`${selectedType} Playlist`}
                                         frameBorder="0"
                                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                                         allowFullScreen

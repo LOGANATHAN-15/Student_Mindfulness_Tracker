@@ -89,21 +89,21 @@ const Journal = () => {
     );
 
     return (
-        <div className="min-h-screen transition-colors duration-300 pb-20">
+        <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 pb-20">
             <div className="container mx-auto px-4 py-12 max-w-6xl">
                 {/* Header */}
-                <div className="flex flex-col md:flex-row justify-between items-center gap-6 mb-12">
-                    <div className="text-center md:text-left">
-                        <h1 className="text-4xl font-bold">
+                <div className="flex justify-between items-center mb-8">
+                    <div>
+                        <h1 className="text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary mb-2">
                             Reflection Journal
                         </h1>
-                        <p className="text-lg opacity-70 mt-1">Your mindfulness journey in words</p>
+                        <p className="text-xl opacity-70 dark:text-gray-300">Your mindfulness journey in words</p>
                     </div>
                     <motion.button
-                        whileHover={{ y: -2 }}
+                        whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                         onClick={() => setShowCreateModal(true)}
-                        className="btn-premium px-8"
+                        className="btn-primary"
                     >
                         <Plus size={20} />
                         New Entry
@@ -111,15 +111,15 @@ const Journal = () => {
                 </div>
 
                 {/* Search */}
-                <div className="glass-panel p-4 mb-8">
+                <div className="glass-panel card-bg p-4 mb-6">
                     <div className="relative">
-                        <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-muted" size={20} />
+                        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
                         <input
                             type="text"
-                            placeholder="Search your reflections..."
+                            placeholder="Search journals..."
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
-                            className="input-premium pl-12 py-3"
+                            className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-transparent dark:bg-slate-800/50 focus:outline-none focus:ring-2 focus:ring-primary/50 text-gray-800 dark:text-gray-100 placeholder-gray-400"
                         />
                     </div>
                 </div>
@@ -133,10 +133,10 @@ const Journal = () => {
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 exit={{ opacity: 0, y: -20 }}
-                                className="glass-panel p-6 space-y-3 hover:shadow-2xl transition-shadow"
+                                className="glass-panel card-bg p-6 space-y-3 hover:shadow-2xl transition-shadow"
                             >
                                 <div className="flex justify-between items-start">
-                                    <h3 className="text-xl font-bold flex-1">{journal.title}</h3>
+                                    <h3 className="text-xl font-bold flex-1 dark:text-gray-100">{journal.title}</h3>
                                     <div className="flex gap-2">
                                         <button
                                             onClick={() => {
@@ -219,89 +219,89 @@ const Journal = () => {
                                 initial={{ scale: 0.9, y: 20 }}
                                 animate={{ scale: 1, y: 0 }}
                                 exit={{ scale: 0.9, y: 20 }}
-                                className="glass-panel p-10 max-w-2xl w-full max-h-[90vh] overflow-y-auto border-none shadow-[0_30px_60px_-15px_rgba(0,0,0,0.3)]"
+                                className="glass-panel p-8 max-w-2xl w-full max-h-[90vh] overflow-y-auto"
                                 onClick={(e) => e.stopPropagation()}
                             >
-                                <h2 className="text-4xl font-black mb-8 tracking-tight">
-                                    {editingJournal ? 'Update Reflection' : 'New Journey Entry'}
+                                <h2 className="text-3xl font-bold mb-6">
+                                    {editingJournal ? 'Edit Entry' : 'New Journal Entry'}
                                 </h2>
 
-                                <form onSubmit={handleSubmit} className="space-y-8">
-                                    <div className="space-y-6">
-                                        <div>
-                                            <label className="block text-sm font-black uppercase tracking-widest text-muted mb-2">Entry Title</label>
-                                            <input
-                                                type="text"
-                                                value={formData.title}
-                                                onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                                                className="input-premium"
-                                                required
-                                                placeholder="Give your session a name..."
-                                            />
+                                <form onSubmit={handleSubmit} className="space-y-6">
+                                    <div className="space-y-4">
+                                        <div className="p-4 bg-primary/5 dark:bg-primary/10 rounded-xl border border-primary/20">
+                                            <p className="text-sm font-medium opacity-70">Journaling helps track your emotional patterns over time.</p>
                                         </div>
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm font-semibold mb-2">Title</label>
+                                        <input
+                                            type="text"
+                                            value={formData.title}
+                                            onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                                            className="input-field"
+                                            required
+                                            placeholder="Give your entry a title..."
+                                        />
+                                    </div>
 
-                                        <div>
-                                            <label className="block text-sm font-black uppercase tracking-widest text-muted mb-2">Reflections</label>
-                                            <textarea
-                                                value={formData.content}
-                                                onChange={(e) => setFormData({ ...formData, content: e.target.value })}
-                                                className="input-premium min-h-[220px]"
-                                                required
-                                                placeholder="What's on your mind? How was your practice?"
-                                            />
-                                        </div>
+                                    <div>
+                                        <label className="block text-sm font-semibold mb-2">Content</label>
+                                        <textarea
+                                            value={formData.content}
+                                            onChange={(e) => setFormData({ ...formData, content: e.target.value })}
+                                            className="input-field min-h-[200px] resize-y"
+                                            required
+                                            placeholder="Write your thoughts..."
+                                        />
                                     </div>
 
                                     <MoodSelector
                                         value={formData.mood}
                                         onChange={(mood) => setFormData({ ...formData, mood })}
-                                        label="Current Energy"
+                                        label="How are you feeling?"
                                     />
 
                                     <div>
-                                        <label className="block text-sm font-black uppercase tracking-widest text-muted mb-3">Associations (Tags)</label>
-                                        <div className="flex gap-3 mb-4">
+                                        <label className="block text-sm font-semibold mb-2">Tags</label>
+                                        <div className="flex gap-2 mb-2">
                                             <input
                                                 type="text"
                                                 value={tagInput}
                                                 onChange={(e) => setTagInput(e.target.value)}
-                                                onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), addTag())}
-                                                className="input-premium flex-1"
-                                                placeholder="Add a focus area..."
+                                                onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addTag())}
+                                                className="input-field flex-1"
+                                                placeholder="Add a tag..."
                                             />
                                             <button
                                                 type="button"
                                                 onClick={addTag}
-                                                className="p-4 bg-secondary text-white rounded-2xl hover:scale-105 transition-all"
+                                                className="px-4 py-2 bg-primary text-white rounded-xl"
                                             >
-                                                <Plus size={24} />
+                                                Add
                                             </button>
                                         </div>
                                         <div className="flex flex-wrap gap-2">
                                             {formData.tags.map((tag, idx) => (
-                                                <motion.span
-                                                    layout
-                                                    initial={{ opacity: 0, scale: 0.8 }}
-                                                    animate={{ opacity: 1, scale: 1 }}
+                                                <span
                                                     key={idx}
-                                                    className="px-4 py-2 bg-primary/10 text-primary rounded-xl text-sm font-bold flex items-center gap-2 border border-primary/20"
+                                                    className="px-3 py-1 bg-primary/20 text-primary rounded-full text-sm flex items-center gap-2"
                                                 >
-                                                    #{tag}
+                                                    {tag}
                                                     <button
                                                         type="button"
                                                         onClick={() => removeTag(tag)}
-                                                        className="hover:text-red-500 transition-colors"
+                                                        className="hover:text-red-500"
                                                     >
                                                         ×
                                                     </button>
-                                                </motion.span>
+                                                </span>
                                             ))}
                                         </div>
                                     </div>
 
-                                    <div className="flex gap-4 pt-6">
-                                        <button type="submit" className="flex-1 btn-premium py-4">
-                                            {editingJournal ? 'Synchronize' : 'Commit to Journal'}
+                                    <div className="flex gap-3 pt-4">
+                                        <button type="submit" className="btn-primary flex-1">
+                                            {editingJournal ? 'Update' : 'Save'} Entry
                                         </button>
                                         <button
                                             type="button"
@@ -309,9 +309,9 @@ const Journal = () => {
                                                 setShowCreateModal(false);
                                                 resetForm();
                                             }}
-                                            className="px-8 py-4 rounded-2xl bg-surface border border-border-color font-bold text-secondary hover:bg-red-50 hover:text-red-500 hover:border-red-200 transition-all"
+                                            className="px-6 py-3 bg-gray-500 hover:bg-gray-600 text-white rounded-xl font-medium"
                                         >
-                                            Discard
+                                            Cancel
                                         </button>
                                     </div>
                                 </form>
@@ -325,4 +325,3 @@ const Journal = () => {
 };
 
 export default Journal;
-

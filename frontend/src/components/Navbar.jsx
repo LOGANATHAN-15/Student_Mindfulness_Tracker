@@ -3,6 +3,7 @@ import { useContext, useState } from 'react';
 import AuthContext from '../context/AuthContext';
 import { Menu, X, LogOut, User, History, PlusCircle, LayoutDashboard } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import ThemeToggle from './ThemeToggle';
 
 const Navbar = () => {
     const { user, logout } = useContext(AuthContext);
@@ -15,8 +16,8 @@ const Navbar = () => {
         <Link
             to={to}
             className={`flex items-center space-x-2 px-4 py-2 rounded-lg transition-all duration-200 ${isActive(to)
-                    ? 'bg-primary/10 text-primary-dark font-medium'
-                    : 'text-gray-600 hover:bg-gray-50 hover:text-primary'
+                    ? 'bg-primary/10 text-primary-dark dark:text-primary font-medium'
+                    : 'text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-800 hover:text-primary'
                 }`}
             onClick={() => setIsOpen(false)}
         >
@@ -26,53 +27,50 @@ const Navbar = () => {
     );
 
     return (
-        <nav className="sticky top-0 z-50 transition-all duration-500 border-b border-white/5" style={{ backgroundColor: 'var(--bg-glass)', backdropFilter: 'blur(16px)' }}>
-            <div className="container mx-auto px-6">
-                <div className="flex justify-between items-center h-20">
+        <nav className="sticky top-0 z-50 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-gray-100 dark:border-slate-800 shadow-sm">
+            <div className="container mx-auto px-4">
+                <div className="flex justify-between items-center h-16">
                     {/* Logo */}
-                    <Link to="/" className="flex items-center space-x-3 group">
-                        <motion.div 
-                            whileHover={{ rotate: 360 }}
-                            transition={{ duration: 0.8 }}
-                            className="w-10 h-10 bg-gradient-to-tr from-primary to-secondary rounded-2xl flex items-center justify-center text-white font-black text-2xl shadow-lg shadow-primary/20"
-                        >
+                    <Link to="/" className="flex items-center space-x-2">
+                        <div className="w-8 h-8 bg-gradient-to-tr from-primary to-secondary rounded-lg flex items-center justify-center text-white font-bold text-xl">
                             M
-                        </motion.div>
-                        <span className="text-2xl font-black bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary tracking-tighter">
+                        </div>
+                        <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary-dark to-secondary font-sans tracking-tight">
                             MindfulTrack
                         </span>
                     </Link>
 
                     {/* Desktop Nav */}
-                    <div className="hidden md:flex items-center space-x-2">
+                    <div className="hidden md:flex items-center space-x-4">
                         {user ? (
                             <>
                                 <NavLink to="/dashboard" icon={LayoutDashboard}>Dashboard</NavLink>
-                                <NavLink to="/add-activity" icon={PlusCircle}>Activity</NavLink>
+                                <NavLink to="/add-activity" icon={PlusCircle}>Log Activity</NavLink>
                                 <NavLink to="/history" icon={History}>History</NavLink>
 
-                                <div className="h-8 w-px bg-border-color mx-4"></div>
+                                <div className="h-6 w-px bg-gray-200 dark:bg-slate-700 mx-2"></div>
+                                <ThemeToggle />
 
-                                <div className="flex items-center space-x-4 ml-2">
-                                    <div className="flex flex-col text-right">
-                                        <span className="text-xs font-black uppercase tracking-widest text-muted">Aura</span>
-                                        <span className="text-sm font-bold text-primary">{user.username}</span>
+                                <div className="flex items-center space-x-3 ml-2">
+                                    <div className="text-sm text-gray-500 dark:text-gray-400 font-medium hidden lg:block">
+                                        Hi, {user.username}
                                     </div>
                                     <button
                                         onClick={logout}
-                                        className="p-3 rounded-2xl bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white transition-all duration-300"
-                                        title="Logout"
+                                        className="flex items-center space-x-1 text-gray-500 dark:text-gray-400 hover:text-red-500 transition-colors px-3 py-1.5 rounded-md hover:bg-red-50 dark:hover:bg-red-900/20"
                                     >
-                                        <LogOut size={20} />
+                                        <LogOut size={18} />
+                                        <span>Logout</span>
                                     </button>
                                 </div>
                             </>
                         ) : (
                             <>
-                                <Link to="/login" className="px-6 py-2 font-bold text-secondary hover:text-primary transition-all">
+                                <ThemeToggle />
+                                <Link to="/login" className="text-gray-600 dark:text-gray-300 hover:text-primary font-medium px-4 py-2 transition-colors">
                                     Login
                                 </Link>
-                                <Link to="/register" className="btn-premium">
+                                <Link to="/register" className="btn-primary">
                                     Get Started
                                 </Link>
                             </>
@@ -80,12 +78,13 @@ const Navbar = () => {
                     </div>
 
                     {/* Mobile Menu Button */}
-                    <div className="md:hidden flex items-center">
+                    <div className="md:hidden flex items-center gap-2">
+                        <ThemeToggle />
                         <button
                             onClick={() => setIsOpen(!isOpen)}
-                            className="p-2 rounded-xl text-secondary hover:bg-primary/10 transition-colors"
+                            className="text-gray-500 dark:text-gray-400 hover:text-primary focus:outline-none"
                         >
-                            {isOpen ? <X size={32} /> : <Menu size={32} />}
+                            {isOpen ? <X size={24} /> : <Menu size={24} />}
                         </button>
                     </div>
                 </div>
@@ -95,38 +94,38 @@ const Navbar = () => {
             <AnimatePresence>
                 {isOpen && (
                     <motion.div
-                        initial={{ opacity: 0, scale: 0.95 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        exit={{ opacity: 0, scale: 0.95 }}
-                        className="md:hidden border-t border-border-color bg-surface overflow-hidden shadow-2xl m-4 rounded-3xl"
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: 'auto' }}
+                        exit={{ opacity: 0, height: 0 }}
+                        className="md:hidden border-t border-gray-100 dark:border-slate-800 bg-white dark:bg-slate-900 overflow-hidden"
                     >
-                        <div className="flex flex-col p-6 space-y-3">
+                        <div className="flex flex-col p-4 space-y-2">
                             {user ? (
                                 <>
                                     <NavLink to="/dashboard" icon={LayoutDashboard}>Dashboard</NavLink>
                                     <NavLink to="/add-activity" icon={PlusCircle}>Log Activity</NavLink>
                                     <NavLink to="/history" icon={History}>History</NavLink>
-                                    <hr className="border-border-color my-4" />
+                                    <hr className="border-gray-100 dark:border-slate-800 my-2" />
                                     <button
                                         onClick={() => { logout(); setIsOpen(false); }}
-                                        className="flex items-center justify-center space-x-2 px-6 py-4 bg-red-500 text-white font-black rounded-2xl w-full shadow-lg shadow-red-500/20"
+                                        className="flex items-center space-x-2 px-4 py-2 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg w-full text-left"
                                     >
-                                        <LogOut size={20} />
-                                        <span>SIGN OUT</span>
+                                        <LogOut size={18} />
+                                        <span>Logout</span>
                                     </button>
                                 </>
                             ) : (
                                 <>
                                     <Link
                                         to="/login"
-                                        className="block px-6 py-4 text-center font-bold text-secondary hover:bg-primary/5 rounded-2xl"
+                                        className="block px-4 py-2 text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-800 rounded-lg"
                                         onClick={() => setIsOpen(false)}
                                     >
                                         Login
                                     </Link>
                                     <Link
                                         to="/register"
-                                        className="block px-6 py-4 btn-premium text-center"
+                                        className="block px-4 py-2 bg-primary text-white text-center rounded-lg mt-2"
                                         onClick={() => setIsOpen(false)}
                                     >
                                         Get Started

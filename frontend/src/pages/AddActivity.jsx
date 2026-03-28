@@ -98,17 +98,17 @@ const AddActivity = () => {
     };
 
     return (
-        <div className="container mx-auto px-4 py-12 max-w-2xl">
+        <div className="container mx-auto px-4 py-8 max-w-2xl">
             <motion.div
-                initial={{ opacity: 0, y: 10 }}
+                initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="glass-panel p-8"
+                className="glass-panel card-bg p-8"
             >
                 <div className="flex justify-between items-center mb-8">
                     <h2 className="text-2xl font-bold">
                         {isTimerRunning ? 'Session in Progress' : isComplete ? 'Session Complete' : 'Plan Your Session'}
                     </h2>
-                    <button onClick={() => navigate('/dashboard')} className="p-1 opacity-50 hover:opacity-100 transition-opacity">
+                    <button onClick={() => navigate('/dashboard')} className="opacity-50 hover:opacity-100">
                         <X size={24} />
                     </button>
                 </div>
@@ -116,16 +116,16 @@ const AddActivity = () => {
                 {!isTimerRunning && !isComplete && (
                     <div className="space-y-6">
                         <div>
-                            <label className="block text-sm font-semibold mb-3">Activity Type</label>
+                            <label className="block text-sm font-medium mb-3">Activity Type</label>
                             <div className="grid grid-cols-3 gap-4">
                                 {['Meditation', 'Yoga', 'Breathing'].map((t) => (
                                     <button
                                         key={t}
                                         type="button"
                                         onClick={() => setType(t)}
-                                        className={`py-3 px-2 rounded-xl border-2 transition-all ${type === t
-                                            ? 'bg-primary/10 border-primary text-primary font-bold'
-                                            : 'border-border-color opacity-70 hover:opacity-100'
+                                        className={`py-3 px-4 rounded-xl border-2 transition-all ${type === t
+                                            ? 'bg-primary/10 border-primary text-primary-dark font-bold'
+                                            : 'border-gray-100 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-900'
                                             }`}
                                     >
                                         {t}
@@ -135,7 +135,7 @@ const AddActivity = () => {
                         </div>
 
                         <div>
-                            <label className="block text-sm font-semibold mb-3">Duration (minutes)</label>
+                            <label className="block text-sm font-medium mb-3">Duration (minutes)</label>
                             <div className="relative">
                                 <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                                     <Clock size={20} className="text-primary" />
@@ -144,7 +144,7 @@ const AddActivity = () => {
                                     type="number"
                                     value={duration}
                                     onChange={(e) => setDuration(e.target.value)}
-                                    className="input-premium pl-12 py-4"
+                                    className="input-field pl-12 py-4 text-lg dark:bg-slate-800 dark:border-slate-700 dark:text-white"
                                     placeholder="e.g. 10"
                                     required
                                     min="1"
@@ -162,9 +162,9 @@ const AddActivity = () => {
                             type="button"
                             onClick={startSession}
                             disabled={!duration || !moodBefore}
-                            className="w-full btn-premium py-4 font-bold disabled:opacity-50"
+                            className="w-full btn-primary py-4 text-lg font-bold flex items-center justify-center gap-2 shadow-xl shadow-primary/20 disabled:opacity-50 disabled:shadow-none"
                         >
-                            Start Session
+                            <Play size={20} fill="currentColor" /> Start Session
                         </button>
                     </div>
                 )}
@@ -186,10 +186,10 @@ const AddActivity = () => {
                                 className="absolute w-64 h-64 bg-primary/20 rounded-full blur-3xl"
                             />
                             <div className="relative z-10 text-center">
-                                <h3 className="text-7xl font-bold tracking-tight text-primary">
+                                <h3 className="text-7xl font-black mb-4 tracking-tighter text-primary">
                                     {formatTime(timeLeft)}
                                 </h3>
-                                <p className="text-xl font-medium opacity-50 uppercase tracking-widest mt-2">
+                                <p className="text-xl font-medium opacity-50 uppercase tracking-widest">
                                     {type === 'Breathing' ? 'Inhale ... Exhale' : 'Just Breathe'}
                                 </p>
                             </div>
@@ -198,13 +198,14 @@ const AddActivity = () => {
                         <div className="flex gap-4">
                             <button
                                 onClick={() => setIsTimerRunning(!isTimerRunning)}
-                                className="p-5 rounded-full bg-surface shadow-xl text-primary hover:scale-110 active:scale-95 transition-all border border-border-color"
+                                className="p-5 rounded-full bg-white dark:bg-gray-800 shadow-xl text-primary hover:scale-110 transition-transform"
                             >
                                 {isTimerRunning ? <Pause size={32} fill="currentColor" /> : <Play size={32} fill="currentColor" />}
                             </button>
                             <button
                                 onClick={() => { setIsTimerRunning(false); setTimeLeft(0); handleTimerComplete(); }}
-                                className="p-5 rounded-full bg-red-50 text-red-500 shadow-lg hover:scale-110 active:scale-95 transition-all border border-red-100"
+                                className="p-5 rounded-full bg-red-50 text-red-500 shadow-lg hover:scale-110 transition-transform"
+                                title="End session early"
                             >
                                 <X size={32} />
                             </button>
@@ -215,13 +216,13 @@ const AddActivity = () => {
                 <AnimatePresence>
                     {isComplete && (
                         <motion.form
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
+                            initial={{ opacity: 0, scale: 0.95 }}
+                            animate={{ opacity: 1, scale: 1 }}
                             onSubmit={handleSubmit}
                             className="space-y-8"
                         >
                             <div className="p-6 bg-primary/5 rounded-2xl border border-primary/10 text-center">
-                                <h3 className="text-xl font-bold text-primary mb-1">Excellent work!</h3>
+                                <h3 className="text-xl font-bold text-primary-dark mb-1">Excellent work!</h3>
                                 <p className="opacity-70">You've completed your {duration} minute {type.toLowerCase()} session.</p>
                             </div>
 
@@ -232,23 +233,23 @@ const AddActivity = () => {
                             />
 
                             <div className="space-y-3">
-                                <label className="block text-sm font-semibold">Any notes or reflections?</label>
+                                <label className="block text-sm font-medium">Any notes or reflections?</label>
                                 <textarea
                                     value={journalEntry}
                                     onChange={(e) => setJournalEntry(e.target.value)}
-                                    className="input-premium min-h-[120px] p-4"
+                                    className="input-field min-h-[120px] p-4 resize-none dark:bg-slate-800 dark:border-slate-700 dark:text-white"
                                     placeholder="Write down your thoughts..."
                                 ></textarea>
                             </div>
 
                             <div className="flex gap-4">
-                                <button type="submit" className="flex-1 btn-premium py-4 font-bold">
+                                <button type="submit" className="flex-1 btn-primary py-4 text-lg font-bold shadow-lg shadow-primary/20">
                                     <Save size={20} /> Save & Finish
                                 </button>
                                 <button
                                     type="button"
                                     onClick={() => navigate('/dashboard')}
-                                    className="px-8 py-4 rounded-xl border border-border-color font-bold opacity-60 hover:opacity-100 transition-all"
+                                    className="px-8 py-4 rounded-xl border border-gray-200 dark:border-gray-800 font-bold opacity-60 hover:opacity-100 transition-opacity"
                                 >
                                     Discard
                                 </button>
@@ -257,8 +258,6 @@ const AddActivity = () => {
                     )}
                 </AnimatePresence>
             </motion.div>
-
-
 
             {/* Achievement Popup */}
             <AnimatePresence>
