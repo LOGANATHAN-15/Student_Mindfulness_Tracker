@@ -56,12 +56,12 @@ const GuidedSession = () => {
                         <h1 className="text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">
                             Guided Sessions
                         </h1>
-                        <p className="text-xl opacity-70">A specialized practice for your wellbeing</p>
+                        <p className="text-xl opacity-70 dark:text-gray-300">A specialized practice for your wellbeing</p>
                     </div>
 
                     {!selectedType ? (
                         <div className="space-y-4">
-                            <h2 className="text-2xl font-bold text-center mb-6">Choose Your Practice</h2>
+                            <h2 className="text-2xl font-bold text-center mb-6 dark:text-gray-100">Choose Your Practice</h2>
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                                 {activityTypes.map(({ name, icon: Icon, color, description }, index) => (
                                     <motion.button
@@ -100,10 +100,10 @@ const GuidedSession = () => {
                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
                             <div className="space-y-6">
                                 <div className="text-center lg:text-left">
-                                    <h2 className="text-3xl font-bold mb-2">{selectedType} Session</h2>
+                                    <h2 className="text-3xl font-bold mb-2 dark:text-gray-100">{selectedType} Session</h2>
                                     <button
                                         onClick={() => setSelectedType(null)}
-                                        className="text-sm text-primary hover:underline"
+                                        className="text-sm text-primary hover:underline hover:text-primary-dark"
                                     >
                                         ← Change Activity
                                     </button>

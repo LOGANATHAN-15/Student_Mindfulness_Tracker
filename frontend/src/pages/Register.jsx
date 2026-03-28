@@ -37,11 +37,11 @@ const Register = () => {
             <motion.div
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
-                className="w-full max-w-md bg-white rounded-2xl shadow-xl overflow-hidden p-8"
+                className="w-full max-w-md bg-white dark:bg-slate-900 rounded-2xl shadow-xl overflow-hidden p-8 border border-gray-100 dark:border-slate-800"
             >
                 <div className="text-center mb-8">
-                    <h2 className="text-3xl font-bold text-gray-800 mb-2">Create Account</h2>
-                    <p className="text-gray-500">Join our mindfulness community today</p>
+                    <h2 className="text-3xl font-bold text-gray-800 dark:text-gray-100 mb-2">Create Account</h2>
+                    <p className="text-gray-500 dark:text-gray-400">Join our mindfulness community today</p>
                 </div>
 
                 {error && (
@@ -111,9 +111,9 @@ const Register = () => {
                 </form>
 
                 <div className="my-6 flex items-center">
-                    <div className="flex-grow border-t border-gray-200"></div>
+                    <div className="flex-grow border-t border-gray-200 dark:border-slate-700"></div>
                     <span className="flex-shrink-0 mx-4 text-gray-400 text-sm">or continue with</span>
-                    <div className="flex-grow border-t border-gray-200"></div>
+                    <div className="flex-grow border-t border-gray-200 dark:border-slate-700"></div>
                 </div>
 
                 <div className="flex justify-center">

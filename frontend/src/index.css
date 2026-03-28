@@ -57,10 +57,9 @@
 
 /* Enhanced Gradient Background */
 .auth-gradient {
-  background: radial-gradient(circle at top left, #dcfce7 0%, transparent 40%),
-    radial-gradient(circle at bottom right, #dbeafe 0%, transparent 40%),
-    #f8fafc;
-  /* Fallback/Base */
+  background: radial-gradient(circle at top left, var(--accent-primary) 0%, transparent 40%),
+    radial-gradient(circle at bottom right, var(--accent-secondary) 0%, transparent 40%),
+    var(--bg-primary);
 }
 
 .btn-primary {
@@ -72,7 +71,7 @@
 }
 
 .input-field {
-  @apply w-full px-5 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-4 focus:ring-primary/20 focus:border-primary transition-all duration-300 bg-white/60 backdrop-blur-sm shadow-inner;
+  @apply w-full px-5 py-3 rounded-xl border border-gray-200 dark:border-slate-700 focus:outline-none focus:ring-4 focus:ring-primary/20 focus:border-primary transition-all duration-300 bg-white/60 dark:bg-slate-800/60 backdrop-blur-sm shadow-inner text-gray-800 dark:text-gray-100;
 }
 
 /* 3D Animations */

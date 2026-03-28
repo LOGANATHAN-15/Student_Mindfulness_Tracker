@@ -36,11 +36,11 @@ const Login = () => {
             <motion.div
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
-                className="w-full max-w-md bg-white rounded-2xl shadow-xl overflow-hidden p-8"
+                className="w-full max-w-md bg-white dark:bg-slate-900 rounded-2xl shadow-xl overflow-hidden p-8 border border-gray-100 dark:border-slate-800"
             >
                 <div className="text-center mb-8">
-                    <h2 className="text-3xl font-bold text-gray-800 mb-2">Welcome Back</h2>
-                    <p className="text-gray-500">Sign in to continue your journey</p>
+                    <h2 className="text-3xl font-bold text-gray-800 dark:text-gray-100 mb-2">Welcome Back</h2>
+                    <p className="text-gray-500 dark:text-gray-400">Sign in to continue your journey</p>
                 </div>
 
                 {error && (

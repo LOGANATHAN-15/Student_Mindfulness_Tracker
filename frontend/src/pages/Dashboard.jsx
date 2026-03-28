@@ -172,7 +172,7 @@ const Dashboard = () => {
                         </div>
 
                     {/* Main Actions - 3D Cards */}
-                    <h2 className="text-2xl font-bold mb-8 pl-2 border-l-4 border-primary">Quick Actions</h2>
+                    <h2 className="text-2xl font-bold mb-8 pl-2 border-l-4 border-primary dark:text-gray-100">Quick Actions</h2>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
                         <Link to="/add-activity" className="block group">
                             <Tilt
@@ -181,7 +181,7 @@ const Dashboard = () => {
                                 scale={1.02}
                                 className="h-full"
                             >
-                                <div className="glass-panel card-bg h-64 flex flex-col items-center justify-center p-8 border-2 border-dashed border-primary/30 group-hover:border-primary transition-all cursor-pointer relative overflow-hidden bg-gradient-to-br from-white/10 to-primary/5">
+                                <div className="glass-panel card-bg h-64 flex flex-col items-center justify-center p-8 border-2 border-dashed border-primary/30 group-hover:border-primary transition-all cursor-pointer relative overflow-hidden bg-gradient-to-br from-white/10 dark:from-slate-800 to-primary/5">
                                     <div className="absolute inset-0 bg-primary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-xl" />
 
                                     <div className="z-10 bg-white dark:bg-slate-800 p-6 rounded-full shadow-xl shadow-primary/20 mb-6 group-hover:scale-110 group-hover:shadow-primary/40 transition-all duration-300">
@@ -201,7 +201,7 @@ const Dashboard = () => {
                                 scale={1.02}
                                 className="h-full"
                             >
-                                <div className="glass-panel card-bg h-64 flex flex-col items-center justify-center p-8 border-2 border-transparent group-hover:border-secondary/30 transition-all cursor-pointer relative overflow-hidden bg-gradient-to-br from-white/10 to-secondary/5">
+                                <div className="glass-panel card-bg h-64 flex flex-col items-center justify-center p-8 border-2 border-transparent group-hover:border-secondary/30 transition-all cursor-pointer relative overflow-hidden bg-gradient-to-br from-white/10 dark:from-slate-800 to-secondary/5">
                                     <div className="absolute inset-0 bg-secondary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-xl" />
 
                                     <div className="z-10 bg-white dark:bg-slate-800 p-6 rounded-full shadow-xl shadow-secondary/20 mb-6 group-hover:scale-110 group-hover:shadow-secondary/40 transition-all duration-300">
@@ -209,7 +209,7 @@ const Dashboard = () => {
                                     </div>
 
                                     <h3 className="text-2xl font-bold z-10 text-gray-800 dark:text-gray-100">View History</h3>
-                                    <p className="opacity-70 mt-2 z-10 font-medium">Past sessions</p>
+                                    <p className="text-gray-500 dark:text-gray-400 mt-2 z-10 font-medium">Past sessions</p>
                                 </div>
                             </Tilt>
                         </Link>
@@ -221,15 +221,15 @@ const Dashboard = () => {
                                 scale={1.02}
                                 className="h-full"
                             >
-                                <div className="glass-panel h-64 flex flex-col items-center justify-center p-8 border-2 border-transparent group-hover:border-purple-300 transition-all cursor-pointer relative overflow-hidden bg-gradient-to-br from-white dark:from-gray-800 to-purple-50 dark:to-purple-900/10">
+                                <div className="glass-panel card-bg h-64 flex flex-col items-center justify-center p-8 border-2 border-transparent group-hover:border-purple-300 transition-all cursor-pointer relative overflow-hidden bg-gradient-to-br from-white dark:from-slate-800 to-purple-50 dark:to-purple-900/10">
                                     <div className="absolute inset-0 bg-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-xl" />
 
-                                    <div className="z-10 bg-white dark:bg-gray-800 p-6 rounded-full shadow-xl shadow-purple-500/20 mb-6 group-hover:scale-110 group-hover:shadow-purple-500/40 transition-all duration-300">
+                                    <div className="z-10 bg-white dark:bg-slate-800 p-6 rounded-full shadow-xl shadow-purple-500/20 mb-6 group-hover:scale-110 group-hover:shadow-purple-500/40 transition-all duration-300">
                                         <BookOpen size={48} className="text-purple-600" />
                                     </div>
 
-                                    <h3 className="text-2xl font-bold z-10">Journal</h3>
-                                    <p className="opacity-70 mt-2 z-10 font-medium">Reflections</p>
+                                    <h3 className="text-2xl font-bold z-10 text-gray-800 dark:text-gray-100">Journal</h3>
+                                    <p className="text-gray-500 dark:text-gray-400 mt-2 z-10 font-medium">Reflections</p>
                                 </div>
                             </Tilt>
                         </Link>
@@ -241,15 +241,15 @@ const Dashboard = () => {
                                 scale={1.02}
                                 className="h-full"
                             >
-                                <div className="glass-panel h-64 flex flex-col items-center justify-center p-8 border-2 border-transparent group-hover:border-green-300 transition-all cursor-pointer relative overflow-hidden bg-gradient-to-br from-white dark:from-gray-800 to-green-50 dark:to-green-900/10">
+                                <div className="glass-panel card-bg h-64 flex flex-col items-center justify-center p-8 border-2 border-transparent group-hover:border-green-300 transition-all cursor-pointer relative overflow-hidden bg-gradient-to-br from-white dark:from-slate-800 to-green-50 dark:to-green-900/10">
                                     <div className="absolute inset-0 bg-green-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-xl" />
 
-                                    <div className="z-10 bg-white dark:bg-gray-800 p-6 rounded-full shadow-xl shadow-green-500/20 mb-6 group-hover:scale-110 group-hover:shadow-green-500/40 transition-all duration-300">
+                                    <div className="z-10 bg-white dark:bg-slate-800 p-6 rounded-full shadow-xl shadow-green-500/20 mb-6 group-hover:scale-110 group-hover:shadow-green-500/40 transition-all duration-300">
                                         <Timer size={48} className="text-green-600" />
                                     </div>
 
-                                    <h3 className="text-2xl font-bold z-10">Guided Timer</h3>
-                                    <p className="opacity-70 mt-2 z-10 font-medium">Timed sessions</p>
+                                    <h3 className="text-2xl font-bold z-10 text-gray-800 dark:text-gray-100">Guided Timer</h3>
+                                    <p className="text-gray-500 dark:text-gray-400 mt-2 z-10 font-medium">Timed sessions</p>
                                 </div>
                             </Tilt>
                         </Link>

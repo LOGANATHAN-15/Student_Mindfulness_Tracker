@@ -51,12 +51,12 @@ const ActivityHistory = () => {
         <div className="container mx-auto px-4 py-8 max-w-4xl">
             <div className="flex items-center justify-between mb-8">
                 <div className="flex items-center gap-4">
-                    <Link to="/dashboard" className="p-2 hover:bg-gray-100 rounded-full transition-colors">
-                        <ArrowLeft size={24} className="text-gray-600" />
+                    <Link to="/dashboard" className="p-2 hover:bg-gray-100 dark:hover:bg-slate-800 rounded-full transition-colors">
+                        <ArrowLeft size={24} className="text-gray-600 dark:text-gray-400" />
                     </Link>
-                    <h2 className="text-2xl font-bold text-gray-800">Your Journey</h2>
+                    <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-100">Your Journey</h2>
                 </div>
-                <div className="text-gray-500">
+                <div className="text-gray-500 dark:text-gray-400">
                     {activities.length} entries
                 </div>
             </div>
@@ -81,13 +81,13 @@ const ActivityHistory = () => {
                                 animate={{ opacity: 1, y: 0 }}
                                 exit={{ opacity: 0, x: -100 }}
                                 transition={{ delay: index * 0.05 }}
-                                className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow group relative"
+                                className="bg-white dark:bg-slate-900 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-slate-800 hover:shadow-md transition-shadow group relative"
                             >
                                 <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-4">
                                     <div className="flex items-start gap-4">
-                                        <div className={`p-3 rounded-xl ${activity.type === 'Meditation' ? 'bg-green-100 text-green-600' :
-                                            activity.type === 'Yoga' ? 'bg-orange-100 text-orange-600' :
-                                                'bg-blue-100 text-blue-600'
+                                        <div className={`p-3 rounded-xl ${activity.type === 'Meditation' ? 'bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400' :
+                                            activity.type === 'Yoga' ? 'bg-orange-100 dark:bg-orange-900/30 text-orange-600 dark:text-orange-400' :
+                                                'bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400'
                                             }`}>
                                             {activity.type === 'Meditation' ? <span className="text-2xl">🧘</span> :
                                                 activity.type === 'Yoga' ? <span className="text-2xl">🤸</span> :
@@ -95,12 +95,12 @@ const ActivityHistory = () => {
                                         </div>
                                         <div>
                                             <div className="flex items-center gap-3 mb-1">
-                                                <h3 className="font-bold text-gray-800">{activity.type}</h3>
-                                                <span className="text-xs px-2 py-0.5 rounded-full bg-gray-100 text-gray-500 font-medium flex items-center gap-1">
+                                                <h3 className="font-bold text-gray-800 dark:text-gray-100">{activity.type}</h3>
+                                                <span className="text-xs px-2 py-0.5 rounded-full bg-gray-100 dark:bg-slate-800 text-gray-500 dark:text-gray-400 font-medium flex items-center gap-1">
                                                     <Clock size={12} /> {activity.duration} min
                                                 </span>
                                             </div>
-                                            <p className="text-gray-500 text-sm mb-2">{new Date(activity.date).toLocaleDateString(undefined, {
+                                            <p className="text-gray-500 dark:text-gray-400 text-sm mb-2">{new Date(activity.date).toLocaleDateString(undefined, {
                                                 weekday: 'long',
                                                 year: 'numeric',
                                                 month: 'long',
