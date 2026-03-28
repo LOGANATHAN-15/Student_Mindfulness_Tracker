@@ -26,48 +26,53 @@ const Navbar = () => {
     );
 
     return (
-        <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100 shadow-sm">
-            <div className="container mx-auto px-4">
-                <div className="flex justify-between items-center h-16">
+        <nav className="sticky top-0 z-50 transition-all duration-500 border-b border-white/5" style={{ backgroundColor: 'var(--bg-glass)', backdropFilter: 'blur(16px)' }}>
+            <div className="container mx-auto px-6">
+                <div className="flex justify-between items-center h-20">
                     {/* Logo */}
-                    <Link to="/" className="flex items-center space-x-2">
-                        <div className="w-8 h-8 bg-gradient-to-tr from-primary to-secondary rounded-lg flex items-center justify-center text-white font-bold text-xl">
+                    <Link to="/" className="flex items-center space-x-3 group">
+                        <motion.div 
+                            whileHover={{ rotate: 360 }}
+                            transition={{ duration: 0.8 }}
+                            className="w-10 h-10 bg-gradient-to-tr from-primary to-secondary rounded-2xl flex items-center justify-center text-white font-black text-2xl shadow-lg shadow-primary/20"
+                        >
                             M
-                        </div>
-                        <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary-dark to-secondary font-sans tracking-tight">
+                        </motion.div>
+                        <span className="text-2xl font-black bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary tracking-tighter">
                             MindfulTrack
                         </span>
                     </Link>
 
                     {/* Desktop Nav */}
-                    <div className="hidden md:flex items-center space-x-4">
+                    <div className="hidden md:flex items-center space-x-2">
                         {user ? (
                             <>
                                 <NavLink to="/dashboard" icon={LayoutDashboard}>Dashboard</NavLink>
-                                <NavLink to="/add-activity" icon={PlusCircle}>Log Activity</NavLink>
+                                <NavLink to="/add-activity" icon={PlusCircle}>Activity</NavLink>
                                 <NavLink to="/history" icon={History}>History</NavLink>
 
-                                <div className="h-6 w-px bg-gray-200 mx-2"></div>
+                                <div className="h-8 w-px bg-border-color mx-4"></div>
 
-                                <div className="flex items-center space-x-3 ml-2">
-                                    <div className="text-sm text-gray-500 font-medium hidden lg:block">
-                                        Hi, {user.username}
+                                <div className="flex items-center space-x-4 ml-2">
+                                    <div className="flex flex-col text-right">
+                                        <span className="text-xs font-black uppercase tracking-widest text-muted">Aura</span>
+                                        <span className="text-sm font-bold text-primary">{user.username}</span>
                                     </div>
                                     <button
                                         onClick={logout}
-                                        className="flex items-center space-x-1 text-gray-500 hover:text-red-500 transition-colors px-3 py-1.5 rounded-md hover:bg-red-50"
+                                        className="p-3 rounded-2xl bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white transition-all duration-300"
+                                        title="Logout"
                                     >
-                                        <LogOut size={18} />
-                                        <span>Logout</span>
+                                        <LogOut size={20} />
                                     </button>
                                 </div>
                             </>
                         ) : (
                             <>
-                                <Link to="/login" className="text-gray-600 hover:text-primary font-medium px-4 py-2 transition-colors">
+                                <Link to="/login" className="px-6 py-2 font-bold text-secondary hover:text-primary transition-all">
                                     Login
                                 </Link>
-                                <Link to="/register" className="btn-primary">
+                                <Link to="/register" className="btn-premium">
                                     Get Started
                                 </Link>
                             </>
@@ -78,9 +83,9 @@ const Navbar = () => {
                     <div className="md:hidden flex items-center">
                         <button
                             onClick={() => setIsOpen(!isOpen)}
-                            className="text-gray-500 hover:text-primary focus:outline-none"
+                            className="p-2 rounded-xl text-secondary hover:bg-primary/10 transition-colors"
                         >
-                            {isOpen ? <X size={24} /> : <Menu size={24} />}
+                            {isOpen ? <X size={32} /> : <Menu size={32} />}
                         </button>
                     </div>
                 </div>
@@ -90,38 +95,38 @@ const Navbar = () => {
             <AnimatePresence>
                 {isOpen && (
                     <motion.div
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: 'auto' }}
-                        exit={{ opacity: 0, height: 0 }}
-                        className="md:hidden border-t border-gray-100 bg-white overflow-hidden"
+                        initial={{ opacity: 0, scale: 0.95 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.95 }}
+                        className="md:hidden border-t border-border-color bg-surface overflow-hidden shadow-2xl m-4 rounded-3xl"
                     >
-                        <div className="flex flex-col p-4 space-y-2">
+                        <div className="flex flex-col p-6 space-y-3">
                             {user ? (
                                 <>
                                     <NavLink to="/dashboard" icon={LayoutDashboard}>Dashboard</NavLink>
                                     <NavLink to="/add-activity" icon={PlusCircle}>Log Activity</NavLink>
                                     <NavLink to="/history" icon={History}>History</NavLink>
-                                    <hr className="border-gray-100 my-2" />
+                                    <hr className="border-border-color my-4" />
                                     <button
                                         onClick={() => { logout(); setIsOpen(false); }}
-                                        className="flex items-center space-x-2 px-4 py-2 text-red-500 hover:bg-red-50 rounded-lg w-full text-left"
+                                        className="flex items-center justify-center space-x-2 px-6 py-4 bg-red-500 text-white font-black rounded-2xl w-full shadow-lg shadow-red-500/20"
                                     >
-                                        <LogOut size={18} />
-                                        <span>Logout</span>
+                                        <LogOut size={20} />
+                                        <span>SIGN OUT</span>
                                     </button>
                                 </>
                             ) : (
                                 <>
                                     <Link
                                         to="/login"
-                                        className="block px-4 py-2 text-gray-600 hover:bg-gray-50 rounded-lg"
+                                        className="block px-6 py-4 text-center font-bold text-secondary hover:bg-primary/5 rounded-2xl"
                                         onClick={() => setIsOpen(false)}
                                     >
                                         Login
                                     </Link>
                                     <Link
                                         to="/register"
-                                        className="block px-4 py-2 bg-primary text-white text-center rounded-lg mt-2"
+                                        className="block px-6 py-4 btn-premium text-center"
                                         onClick={() => setIsOpen(false)}
                                     >
                                         Get Started

@@ -89,37 +89,37 @@ const Journal = () => {
     );
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 pb-20">
-            <div className="container mx-auto px-4 py-12 max-w-6xl">
+        <div className="min-h-screen transition-colors duration-500 pb-20">
+            <div className="container mx-auto px-4 py-16 max-w-6xl">
                 {/* Header */}
-                <div className="flex justify-between items-center mb-8">
-                    <div>
-                        <h1 className="text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary mb-2">
+                <div className="flex flex-col md:flex-row justify-between items-center gap-8 mb-16">
+                    <div className="text-center md:text-left">
+                        <h1 className="text-6xl font-black tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-primary via-secondary to-accent-tertiary">
                             Reflection Journal
                         </h1>
-                        <p className="text-xl opacity-70">Your mindfulness journey in words</p>
+                        <p className="text-xl text-secondary font-medium mt-2">Your mindfulness journey in words</p>
                     </div>
                     <motion.button
-                        whileHover={{ scale: 1.05 }}
+                        whileHover={{ scale: 1.05, y: -5 }}
                         whileTap={{ scale: 0.95 }}
                         onClick={() => setShowCreateModal(true)}
-                        className="btn-primary"
+                        className="btn-premium"
                     >
-                        <Plus size={20} />
+                        <Plus size={24} strokeWidth={2.5} />
                         New Entry
                     </motion.button>
                 </div>
 
                 {/* Search */}
-                <div className="glass-panel p-4 mb-6">
+                <div className="glass-panel p-6 mb-10 border-primary/10">
                     <div className="relative">
-                        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+                        <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-primary" size={24} strokeWidth={2.5} />
                         <input
                             type="text"
-                            placeholder="Search journals..."
+                            placeholder="Explore your reflections..."
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
-                            className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-transparent focus:outline-none focus:ring-2 focus:ring-primary/50"
+                            className="input-premium pl-14 py-4 text-lg"
                         />
                     </div>
                 </div>
@@ -219,84 +219,89 @@ const Journal = () => {
                                 initial={{ scale: 0.9, y: 20 }}
                                 animate={{ scale: 1, y: 0 }}
                                 exit={{ scale: 0.9, y: 20 }}
-                                className="glass-panel p-8 max-w-2xl w-full max-h-[90vh] overflow-y-auto"
+                                className="glass-panel p-10 max-w-2xl w-full max-h-[90vh] overflow-y-auto border-none shadow-[0_30px_60px_-15px_rgba(0,0,0,0.3)]"
                                 onClick={(e) => e.stopPropagation()}
                             >
-                                <h2 className="text-3xl font-bold mb-6">
-                                    {editingJournal ? 'Edit Entry' : 'New Journal Entry'}
+                                <h2 className="text-4xl font-black mb-8 tracking-tight">
+                                    {editingJournal ? 'Update Reflection' : 'New Journey Entry'}
                                 </h2>
 
-                                <form onSubmit={handleSubmit} className="space-y-6">
-                                    <div>
-                                        <label className="block text-sm font-semibold mb-2">Title</label>
-                                        <input
-                                            type="text"
-                                            value={formData.title}
-                                            onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                                            className="input-field"
-                                            required
-                                            placeholder="Give your entry a title..."
-                                        />
-                                    </div>
+                                <form onSubmit={handleSubmit} className="space-y-8">
+                                    <div className="space-y-6">
+                                        <div>
+                                            <label className="block text-sm font-black uppercase tracking-widest text-muted mb-2">Entry Title</label>
+                                            <input
+                                                type="text"
+                                                value={formData.title}
+                                                onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                                                className="input-premium"
+                                                required
+                                                placeholder="Give your session a name..."
+                                            />
+                                        </div>
 
-                                    <div>
-                                        <label className="block text-sm font-semibold mb-2">Content</label>
-                                        <textarea
-                                            value={formData.content}
-                                            onChange={(e) => setFormData({ ...formData, content: e.target.value })}
-                                            className="input-field min-h-[200px] resize-y"
-                                            required
-                                            placeholder="Write your thoughts..."
-                                        />
+                                        <div>
+                                            <label className="block text-sm font-black uppercase tracking-widest text-muted mb-2">Reflections</label>
+                                            <textarea
+                                                value={formData.content}
+                                                onChange={(e) => setFormData({ ...formData, content: e.target.value })}
+                                                className="input-premium min-h-[220px]"
+                                                required
+                                                placeholder="What's on your mind? How was your practice?"
+                                            />
+                                        </div>
                                     </div>
 
                                     <MoodSelector
                                         value={formData.mood}
                                         onChange={(mood) => setFormData({ ...formData, mood })}
-                                        label="How are you feeling?"
+                                        label="Current Energy"
                                     />
 
                                     <div>
-                                        <label className="block text-sm font-semibold mb-2">Tags</label>
-                                        <div className="flex gap-2 mb-2">
+                                        <label className="block text-sm font-black uppercase tracking-widest text-muted mb-3">Associations (Tags)</label>
+                                        <div className="flex gap-3 mb-4">
                                             <input
                                                 type="text"
                                                 value={tagInput}
                                                 onChange={(e) => setTagInput(e.target.value)}
-                                                onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addTag())}
-                                                className="input-field flex-1"
-                                                placeholder="Add a tag..."
+                                                onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), addTag())}
+                                                className="input-premium flex-1"
+                                                placeholder="Add a focus area..."
                                             />
                                             <button
                                                 type="button"
                                                 onClick={addTag}
-                                                className="px-4 py-2 bg-primary text-white rounded-xl"
+                                                className="p-4 bg-secondary text-white rounded-2xl hover:scale-105 transition-all"
                                             >
-                                                Add
+                                                <Plus size={24} />
                                             </button>
                                         </div>
                                         <div className="flex flex-wrap gap-2">
                                             {formData.tags.map((tag, idx) => (
-                                                <span
+                                                <motion.span
+                                                    layout
+                                                    initial={{ opacity: 0, scale: 0.8 }}
+                                                    animate={{ opacity: 1, scale: 1 }}
                                                     key={idx}
-                                                    className="px-3 py-1 bg-primary/20 text-primary rounded-full text-sm flex items-center gap-2"
+                                                    className="px-4 py-2 bg-primary/10 text-primary rounded-xl text-sm font-bold flex items-center gap-2 border border-primary/20"
                                                 >
-                                                    {tag}
+                                                    #{tag}
                                                     <button
                                                         type="button"
                                                         onClick={() => removeTag(tag)}
-                                                        className="hover:text-red-500"
+                                                        className="hover:text-red-500 transition-colors"
                                                     >
                                                         ×
                                                     </button>
-                                                </span>
+                                                </motion.span>
                                             ))}
                                         </div>
                                     </div>
 
-                                    <div className="flex gap-3 pt-4">
-                                        <button type="submit" className="btn-primary flex-1">
-                                            {editingJournal ? 'Update' : 'Save'} Entry
+                                    <div className="flex gap-4 pt-6">
+                                        <button type="submit" className="flex-1 btn-premium py-4">
+                                            {editingJournal ? 'Synchronize' : 'Commit to Journal'}
                                         </button>
                                         <button
                                             type="button"
@@ -304,9 +309,9 @@ const Journal = () => {
                                                 setShowCreateModal(false);
                                                 resetForm();
                                             }}
-                                            className="px-6 py-3 bg-gray-500 hover:bg-gray-600 text-white rounded-xl font-medium"
+                                            className="px-8 py-4 rounded-2xl bg-surface border border-border-color font-bold text-secondary hover:bg-red-50 hover:text-red-500 hover:border-red-200 transition-all"
                                         >
-                                            Cancel
+                                            Discard
                                         </button>
                                     </div>
                                 </form>
@@ -320,3 +325,4 @@ const Journal = () => {
 };
 
 export default Journal;
+

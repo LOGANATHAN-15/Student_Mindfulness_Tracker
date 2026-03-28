@@ -36,7 +36,6 @@ const Dashboard = () => {
         const fetchStats = async () => {
             try {
                 const { data } = await api.get('/activities');
-
                 const totalDuration = data.reduce((acc, curr) => acc + curr.duration, 0);
                 setStats({ totalDuration, sessionCount: data.length });
                 setActivities(data);
@@ -49,98 +48,83 @@ const Dashboard = () => {
     }, [user]);
 
     const containerVariants = {
-        hidden: { opacity: 0 },
+        hidden: { opacity: 0, y: 20 },
         visible: {
             opacity: 1,
-            transition: { staggerChildren: 0.15 }
+            y: 0,
+            transition: { staggerChildren: 0.1, duration: 0.8 }
         }
     };
 
     const itemVariants = {
-        hidden: { opacity: 0 },
-        visible: { opacity: 1 }
+        hidden: { opacity: 0, scale: 0.95 },
+        visible: { opacity: 1, scale: 1 }
     };
 
-
     const StatCard = ({ icon: Icon, label, value, color, delay }) => (
-        // <Tilt
-        //     tiltMaxAngleX={10}
-        //     tiltMaxAngleY={10}
-        //     scale={1.05}
-        //     transitionSpeed={400}
-        //     className="h-full"
-        // >
         <motion.div
             variants={itemVariants}
-            //   whileHover={{ y: -5 }}
-            className={`glass-panel p-6 h-full flex flex-col justify-between relative overflow-hidden group border-t-4 ${color.border}`}
+            whileHover={{ y: -8, transition: { duration: 0.3 } }}
+            className={`glass-panel p-8 h-full flex flex-col justify-between relative overflow-hidden group border-b-4 ${color.border}`}
         >
-            <div className={`absolute top-0 right-0 p-10 opacity-10 transform translate-x-4 -translate-y-4 group-hover:scale-110 transition-transform duration-500`}>
-                <Icon size={120} className={color.text} />
+            <div className="absolute -top-6 -right-6 p-12 opacity-[0.03] dark:opacity-[0.05] group-hover:scale-125 group-hover:rotate-12 transition-all duration-700">
+                <Icon size={160} />
             </div>
 
-            <div className="flex items-center space-x-4 z-10">
-                <div className={`p-4 rounded-2xl ${color.bg} ${color.text} shadow-lg shadow-${color.shadow}/30`}>
-                    <Icon size={28} />
+            <div className="flex items-center gap-6 z-10">
+                <div className={`p-5 rounded-3xl ${color.bg} ${color.text} shadow-xl shadow-black/5 group-hover:scale-110 transition-transform duration-500`}>
+                    <Icon size={32} strokeWidth={2.5} />
                 </div>
                 <div>
-                    <p className="text-gray-500 text-sm font-semibold uppercase tracking-wider">{label}</p>
-                    <h3 className="text-3xl font-bold text-gray-800 mt-1">{value}</h3>
+                    <h3 className="text-4xl font-black tracking-tight">{value}</h3>
+                    <p className="text-sm font-bold uppercase tracking-widest text-muted mt-1">{label}</p>
                 </div>
             </div>
 
-            <div className="mt-6 flex items-center text-sm text-primary">
-
-                <span>View Details</span>
-                <span className="ml-2 group-hover:translate-x-1 transition-transform">→</span>
+            <div className="mt-8 flex items-center justify-between text-xs font-bold uppercase tracking-tighter opacity-0 group-hover:opacity-100 transition-all duration-300">
+                <span className="text-primary">Performance Trend</span>
+                <TrendingUp size={14} className="text-primary" />
             </div>
         </motion.div>
-        // </Tilt>
     );
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 pb-20">
-            {/* Abstract 3D Background Elements */}
+        <div className="min-h-screen transition-colors duration-500 overflow-x-hidden">
+            {/* Ambient Background Elements */}
             <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
-                <div className="absolute top-[-10%] right-[-5%] w-[500px] h-[500px] bg-primary/20 rounded-full blur-[100px] opacity-30 floating" />
-                <div className="absolute bottom-[-10%] left-[-10%] w-[600px] h-[600px] bg-secondary/20 rounded-full blur-[120px] opacity-30 floating-delayed" />
+                <div className="absolute top-[-20%] right-[-10%] w-[800px] h-[800px] bg-primary/10 rounded-full blur-[150px] animate-float opacity-40" />
+                <div className="absolute bottom-[-20%] left-[-10%] w-[900px] h-[900px] bg-secondary/10 rounded-full blur-[180px] animate-float-delayed opacity-40" />
             </div>
 
-            <div className="container mx-auto px-4 py-12 max-w-7xl relative z-10">
-                {/* <motion.div
+            <div className="container mx-auto px-4 py-16 max-w-7xl relative z-10">
+                <motion.div
                     initial="hidden"
                     animate="visible"
                     variants={containerVariants}
-                > */}
-                <div>
-
+                    className="space-y-16"
+                >
                     {/* Header Section */}
-                    <div className="flex flex-col md:flex-row justify-between items-end mb-12">
-                        <div>
-                            <motion.div
-                                initial={{ x: -20, opacity: 0 }}
-                                animate={{ x: 0, opacity: 1 }}
-                                transition={{ duration: 0.8 }}
-                            >
-                                <h1 className="text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-gray-800 to-gray-600 mb-2 drop-shadow-sm">
-                                    Dashboard
-                                </h1>
-                                <p className="text-xl text-gray-500 flex items-center gap-2 font-medium">
-                                    Welcome back, <span className="text-primary-dark">{user?.username}</span> 👋
-                                </p>
-                            </motion.div>
+                    <div className="flex flex-col md:flex-row justify-between items-center md:items-end gap-8 border-b border-primary/10 pb-12">
+                        <div className="text-center md:text-left space-y-2">
+                            <h1 className="text-7xl font-black tracking-tighter bg-clip-text text-transparent bg-gradient-to-br from-primary via-secondary to-accent-tertiary animate-gradient-x">
+                                Dashboard
+                            </h1>
+                            <p className="text-2xl font-medium text-secondary flex items-center justify-center md:justify-start gap-3">
+                                Welcome, <span className="font-black text-primary">{user?.username}</span> 
+                                <motion.span animate={{ rotate: [0, 20, 0] }} transition={{ repeat: Infinity, duration: 2 }}>👋</motion.span>
+                            </p>
                         </div>
 
-                        <div className="mt-6 md:mt-0 flex gap-3">
+                        <div className="flex items-center gap-4">
                             <ThemeToggle />
                             {user?.role === 'admin' && (
                                 <Link to="/admin">
                                     <motion.button
-                                        whileHover={{ scale: 1.05 }}
+                                        whileHover={{ scale: 1.05, boxShadow: '0 20px 25px -5px rgba(168, 85, 247, 0.4)' }}
                                         whileTap={{ scale: 0.95 }}
-                                        className="bg-gradient-to-r from-purple-500 to-indigo-600 text-white px-6 py-3 rounded-xl font-bold shadow-lg shadow-purple-500/30 flex items-center gap-2 hover:shadow-purple-500/50 transition-all"
+                                        className="bg-gradient-to-r from-purple-500 to-indigo-600 text-white px-8 py-4 rounded-2xl font-black shadow-xl shadow-purple-500/20 flex items-center gap-3 transition-all"
                                     >
-                                        <UserCheck size={20} /> Admin Panel
+                                        <UserCheck size={22} strokeWidth={2.5} /> ADMIN PORTAL
                                     </motion.button>
                                 </Link>
                             )}
@@ -148,137 +132,97 @@ const Dashboard = () => {
                     </div>
 
                     {/* Stats Grid */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+                    <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
                         <StatCard
                             icon={Clock}
-                            label="Mindfulness Time"
-                            value={`${stats.totalDuration} min`}
-                            color={{ bg: 'bg-blue-100', text: 'text-blue-600', border: 'border-blue-500', shadow: 'blue' }}
+                            label="Practice Time"
+                            value={`${stats.totalDuration}m`}
+                            color={{ bg: 'bg-blue-500/10', text: 'text-blue-500', border: 'border-blue-500', shadow: 'blue' }}
                         />
                         <StatCard
                             icon={TrendingUp}
                             label="Total Sessions"
                             value={stats.sessionCount}
-                            color={{ bg: 'bg-green-100', text: 'text-green-600', border: 'border-green-500', shadow: 'green' }}
+                            color={{ bg: 'bg-green-500/10', text: 'text-green-500', border: 'border-green-500', shadow: 'green' }}
                         />
-                        <StreakCard token={user.token} />
-                    </div>
-
-                    {/* Mood Chart */}
-                    {activities.length > 0 && (
-                        <div className="mb-16">
-                            <h2 className="text-2xl font-bold mb-6 pl-2 border-l-4 border-primary">Your Mood Journey</h2>
-                            <MoodChart activities={activities} />
+                        <div className="lg:col-span-1">
+                            <StreakCard token={user.token} />
                         </div>
+                    </section>
+
+                    {/* Mood Analysis */}
+                    {activities.length > 0 && (
+                        <motion.section variants={itemVariants} className="space-y-8">
+                            <div className="flex items-center gap-4">
+                                <div className="h-10 w-2 bg-primary rounded-full" />
+                                <h2 className="text-3xl font-black tracking-tight">Emotional Landscape</h2>
+                            </div>
+                            <div className="glass-panel p-8 shadow-2xl">
+                                <MoodChart activities={activities} />
+                            </div>
+                        </motion.section>
                     )}
 
-                    {/* Main Actions - 3D Cards */}
-                    <h2 className="text-2xl font-bold mb-8 pl-2 border-l-4 border-primary">Quick Actions</h2>
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
-                        <Link to="/add-activity" className="block group">
-                            <Tilt
-                                tiltMaxAngleX={5}
-                                tiltMaxAngleY={5}
-                                scale={1.02}
-                                className="h-full"
-                            >
-                                <div className="glass-panel h-64 flex flex-col items-center justify-center p-8 border-2 border-dashed border-primary/30 group-hover:border-primary transition-all cursor-pointer relative overflow-hidden bg-gradient-to-br from-white to-primary/5">
-                                    <div className="absolute inset-0 bg-primary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-xl" />
+                    {/* Actions Grid */}
+                    <section className="space-y-10 group/actions">
+                        <div className="flex items-center gap-4">
+                            <div className="h-10 w-2 bg-secondary rounded-full" />
+                            <h2 className="text-3xl font-black tracking-tight text-secondary">Quick Actions</h2>
+                        </div>
+                        
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                            {[
+                                { to: "/add-activity", icon: Plus, label: "Log Growth", sub: "Record a session", color: "primary", iconColor: "text-primary" },
+                                { to: "/history", icon: History, label: "Reflection", sub: "Past journey", color: "secondary", iconColor: "text-secondary" },
+                                { to: "/journal", icon: BookOpen, label: "Thoughts", sub: "Daily notes", color: "purple", iconColor: "text-purple-500" },
+                                { to: "/guided-session", icon: Timer, label: "Immerse", sub: "Zen timer", color: "green", iconColor: "text-green-500" },
+                            ].map((action, idx) => (
+                                <Link key={action.to} to={action.to} className="group/card h-full">
+                                    <Tilt tiltMaxAngleX={10} tiltMaxAngleY={10} scale={1.05} className="h-full">
+                                        <div className={`glass-panel h-full min-h-[220px] flex flex-col items-center justify-center p-8 border-2 border-transparent group-hover/card:border-${action.color}-500/30 transition-all cursor-pointer relative overflow-hidden bg-gradient-to-br from-transparent to-${action.color}-500/[0.03]`}>
+                                            <div className={`absolute inset-0 bg-${action.color}-500/5 opacity-0 group-hover/card:opacity-100 transition-opacity duration-700 blur-2xl`} />
+                                            
+                                            <div className={`z-10 bg-surface p-6 rounded-[2rem] shadow-2xl group-hover/card:scale-110 group-hover/card:rotate-6 transition-all duration-500`}>
+                                                <action.icon size={42} className={action.iconColor} strokeWidth={2.5} />
+                                            </div>
 
-                                    <div className="z-10 bg-white p-6 rounded-full shadow-xl shadow-primary/20 mb-6 group-hover:scale-110 group-hover:shadow-primary/40 transition-all duration-300">
-                                        <Plus size={48} className="text-primary" />
-                                    </div>
+                                            <h3 className="text-2xl font-black mt-6 z-10">{action.label}</h3>
+                                            <p className="text-muted text-sm font-bold uppercase tracking-widest mt-1 z-10">{action.sub}</p>
+                                        </div>
+                                    </Tilt>
+                                </Link>
+                            ))}
+                        </div>
+                    </section>
 
-                                    <h3 className="text-2xl font-bold text-gray-800 z-10">Log New Activity</h3>
-                                    <p className="text-gray-500 mt-2 z-10 font-medium">Record meditation, yoga, or breathing</p>
-                                </div>
-                            </Tilt>
-                        </Link>
-
-                        <Link to="/history" className="block group">
-                            <Tilt
-                                tiltMaxAngleX={5}
-                                tiltMaxAngleY={5}
-                                scale={1.02}
-                                className="h-full"
-                            >
-                                <div className="glass-panel h-64 flex flex-col items-center justify-center p-8 border-2 border-transparent group-hover:border-secondary/30 transition-all cursor-pointer relative overflow-hidden bg-gradient-to-br from-white dark:from-gray-800 to-secondary/5">
-                                    <div className="absolute inset-0 bg-secondary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-xl" />
-
-                                    <div className="z-10 bg-white dark:bg-gray-800 p-6 rounded-full shadow-xl shadow-secondary/20 mb-6 group-hover:scale-110 group-hover:shadow-secondary/40 transition-all duration-300">
-                                        <History size={48} className="text-secondary" />
-                                    </div>
-
-                                    <h3 className="text-2xl font-bold z-10">View History</h3>
-                                    <p className="opacity-70 mt-2 z-10 font-medium">Past sessions</p>
-                                </div>
-                            </Tilt>
-                        </Link>
-
-                        <Link to="/journal" className="block group">
-                            <Tilt
-                                tiltMaxAngleX={5}
-                                tiltMaxAngleY={5}
-                                scale={1.02}
-                                className="h-full"
-                            >
-                                <div className="glass-panel h-64 flex flex-col items-center justify-center p-8 border-2 border-transparent group-hover:border-purple-300 transition-all cursor-pointer relative overflow-hidden bg-gradient-to-br from-white dark:from-gray-800 to-purple-50 dark:to-purple-900/10">
-                                    <div className="absolute inset-0 bg-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-xl" />
-
-                                    <div className="z-10 bg-white dark:bg-gray-800 p-6 rounded-full shadow-xl shadow-purple-500/20 mb-6 group-hover:scale-110 group-hover:shadow-purple-500/40 transition-all duration-300">
-                                        <BookOpen size={48} className="text-purple-600" />
-                                    </div>
-
-                                    <h3 className="text-2xl font-bold z-10">Journal</h3>
-                                    <p className="opacity-70 mt-2 z-10 font-medium">Reflections</p>
-                                </div>
-                            </Tilt>
-                        </Link>
-
-                        <Link to="/guided-session" className="block group">
-                            <Tilt
-                                tiltMaxAngleX={5}
-                                tiltMaxAngleY={5}
-                                scale={1.02}
-                                className="h-full"
-                            >
-                                <div className="glass-panel h-64 flex flex-col items-center justify-center p-8 border-2 border-transparent group-hover:border-green-300 transition-all cursor-pointer relative overflow-hidden bg-gradient-to-br from-white dark:from-gray-800 to-green-50 dark:to-green-900/10">
-                                    <div className="absolute inset-0 bg-green-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-xl" />
-
-                                    <div className="z-10 bg-white dark:bg-gray-800 p-6 rounded-full shadow-xl shadow-green-500/20 mb-6 group-hover:scale-110 group-hover:shadow-green-500/40 transition-all duration-300">
-                                        <Timer size={48} className="text-green-600" />
-                                    </div>
-
-                                    <h3 className="text-2xl font-bold z-10">Guided Timer</h3>
-                                    <p className="opacity-70 mt-2 z-10 font-medium">Timed sessions</p>
-                                </div>
-                            </Tilt>
-                        </Link>
-                    </div>
-
-                    {/* Quote Section with 3D Pop */}
-                    <motion.div
+                    {/* Wisdom Section */}
+                    <motion.section 
                         variants={itemVariants}
-                        className="relative mt-12"
+                        className="relative pt-10"
                     >
-                        <div className="absolute inset-0 bg-gradient-to-r from-primary to-secondary rounded-2xl transform rotate-1 opacity-20 blur-lg"></div>
-                        <div className="glass-panel bg-white/80 p-10 rounded-2xl relative border-l-8 border-primary shadow-2xl">
-                            <Quote className="absolute top-6 left-6 text-primary/20 transform -scale-x-100" size={80} />
-                            <blockquote className="text-center relative z-10">
-                                <p className="text-2xl italic text-gray-700 font-serif leading-relaxed">
+                        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-px h-20 bg-gradient-to-b from-transparent to-primary/30" />
+                        <div className="glass-panel p-16 text-center relative overflow-hidden group">
+                           <Quote className="absolute -top-4 -left-4 text-primary opacity-5 transform -rotate-12 group-hover:scale-110 transition-transform duration-1000" size={200} />
+                           <Quote className="absolute -bottom-4 -right-4 text-secondary opacity-5 transform rotate-12" size={200} />
+                           
+                           <blockquote className="relative z-10 max-w-4xl mx-auto space-y-8">
+                                <p className="text-4xl md:text-5xl font-black italic tracking-tighter leading-[1.1] text-transparent bg-clip-text bg-gradient-to-r from-text-primary to-text-secondary">
                                     "The present moment is filled with joy and happiness. If you are attentive, you will see it."
                                 </p>
-                                <footer className="mt-6 text-gray-500 font-bold uppercase tracking-widest text-sm">
-                                    — Thich Nhat Hanh
+                                <footer className="flex flex-col items-center gap-2">
+                                    <div className="h-1 w-12 bg-primary rounded-full" />
+                                    <cite className="text-xl font-black uppercase tracking-[0.2em] text-primary not-italic">
+                                        Thich Nhat Hanh
+                                    </cite>
                                 </footer>
-                            </blockquote>
+                           </blockquote>
                         </div>
-                    </motion.div>
-
-                </div>
+                    </motion.section>
+                </motion.div>
             </div>
         </div>
     );
 };
+
 
 export default Dashboard;
